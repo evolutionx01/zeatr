@@ -1,0 +1,30 @@
+<div class="modal-header">
+  <h4 class="modal-title">Change State</h4>
+  <button type="button" class="close" aria-label="Close" (click)="activeModal.dismiss('Cross click')">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+<div id="StatePopup" class="modal-body pb-4">
+  <div class="row">
+    <div class="col-md-12">
+      <p>Selected City: {{selectedState}}</p>
+    </div>
+  </div>
+  <form [formGroup]="myGroup">
+    <div class="form-row">
+      <div class="form-group col-md-12">
+        <label>Select State*</label>
+        <input placeholder="search for location" autocorrect="off" autocapitalize="off" spellcheck="off" type="text"
+        class="form-control" #search formControlName="state"/>
+      </div>
+      <div class="form-group col-md-12">
+          <agm-map [latitude]="latitude" [longitude]="longitude" [scrollwheel]="false" [zoom]="zoom">
+            <agm-marker [latitude]="latitude" [longitude]="longitude"></agm-marker>
+          </agm-map>
+        </div>
+    </div>
+  </form>
+</div>
+<div class="modal-footer">
+  <button class="btn btn_confirm" [disabled]="disabled" (click)="confirm()">Confirm</button>
+</div>

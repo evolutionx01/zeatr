@@ -1,0 +1,15 @@
+<div class="modal-header">
+  <h4 class="modal-title">{{title}}</h4>
+  <button type="button" class="close" aria-label="Close" (click)="activeModal.dismiss('Cross click')">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+<div class="modal-body pb-4">
+  <p [innerHTML]="content"></p>
+</div>
+
+<div class="modal-footer pb-4">
+  <button class="btn btn-delete" (click)="actionClicked('Yes')">{{value}}</button>
+  <button class="btn btn-cancel" (click)="actionClicked('No')">Cancel</button>
+
+</div>

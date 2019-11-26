@@ -1,0 +1,83 @@
+@import '~src/assets/sass/variables';
+@import '~src/assets/sass/mixins';
+#artist_list {
+    background: url('../../../../assets/images/background.png');
+    padding: 2.5rem 0;
+    background-repeat: no-repeat;
+    background-size: 100%;
+    min-height: 450px;
+    span {
+        position: absolute !important;
+        top: 0;
+        right: 0
+    }
+    .btn-load {
+        @include loadmore(#666666,
+        #444)
+    }
+    #artists {
+        margin-bottom: 2rem;
+        box-shadow: 0px 2px 10px #888;
+        padding: 0.5rem;
+        img {
+            cursor: pointer;
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            object-fit: contain;
+        }
+        .card-body {
+            padding: 0.5rem;
+            width: 70%;
+            .btn-ticket {
+                font-size: 12px;
+                padding: 0.125rem .75rem;
+                border-radius: 20px;
+                @include btn_header(#f26633,
+                #fff);
+            }
+            .card-title {
+                cursor: pointer;
+                font-size: 0.8125rem;
+                font-weight: bold;
+                color: #444;
+                display: inline-block;
+                width: 90%;
+                white-space: nowrap;
+                overflow: hidden !important;
+                text-overflow: ellipsis;
+            }
+            .card-text {
+                font-size: .75rem;
+                color: #444;
+            }
+            .event_date {
+                text-align: center;
+                border-right: 1px solid #ddd;
+                .e_month {
+                    font-size: 0.75rem;
+                    color: #f26633;
+                    font-weight: bold;
+                }
+                .e_date {
+                    font-size: 1.5rem;
+                }
+                .e_time {
+                    font-size: 0.85rem;
+                }
+            }
+        }
+    }
+}
+
+.follow {
+    color: #f26633;
+}
+
+.card {
+    color: #000;
+}
+
+.followToggle {
+    cursor: pointer;
+}

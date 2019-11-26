@@ -1,0 +1,22 @@
+@import '~src/assets/sass/variables';
+@import '~src/assets/sass/mixins';
+
+.btn-file{
+    padding: 0.325rem 1.5rem;
+    border-radius: 20px;
+        @include input_file()
+   }
+
+   .btn-save{
+    padding: 0.25rem .75rem;
+    border-radius: 20px;
+    vertical-align: middle;
+    @include btn_header(#f26633, #fff);
+   }
+
+   .btn-cancel{
+    padding: 0.25rem .75rem;
+    border-radius: 20px;
+    vertical-align: middle;
+    @include btn_header(#666, #fff);
+   }

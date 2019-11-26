@@ -1,0 +1,21 @@
+@import '~src/assets/sass/variables';
+@import '~src/assets/sass/mixins';
+
+footer{
+    position: relative;
+    z-index: 11;
+    background: white;
+    #footer_details{
+        padding: 1rem 0;
+        border-bottom: 1px solid #e2e2e2;
+    }
+    #copyRights{
+        padding: 1rem 0;
+        color: #666666;
+    font-size: .75rem;
+    }
+    .terms{
+        cursor: pointer;
+        font-size: .75rem;
+    }
+}

@@ -1,0 +1,120 @@
+<section id="upcoming_events">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-9">
+                <h5>UPCOMING EVENTS</h5>
+            </div>
+            <div class="col-md-3">
+                <ng-select [clearable]="false" [items]="category" bindLabel="category" bindValue="code"
+                    placeholder="Pick A Category" (change)="getListofCategoryEvents($event)">
+                </ng-select>
+            </div>
+        </div>
+        <!-- <div class="row">
+        <div  class="col-12 col-sm-6 col-md-4 col-lg-3 active">
+
+            <div id="events" class="card">
+              <img class="card-img-top p-1" src="../../../../assets/images/event1.png" alt="Card image cap" width="253">
+              <div class="card-body">
+                <div class="row">
+                  <div class="col-md-4 pr-2 event_date">
+                    <p class="e_month m-0">MAR - JAN</p>
+                    <p class="e_date m-0">18-08</p>
+                    <p class="e_time m-0">12:00 AM</p>
+                  </div>
+                  <div class="col-md-8  pl-2 event_details">
+                    <h6 class="card-title ">Fun Event</h6>
+                    <p class="card-text">Some quick example text to build on...</p>
+                    <button class="btn btn-ticket -hollow">BUY TICKET</button>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+          </div>
+    </div> -->
+
+        <div class="row pt-4" *ngIf="!showCarousel">
+
+            <div *ngFor="let item of upcomingEventsData; let i = index" class="col-12 col-sm-6 col-md-4 col-lg-3">
+                <div id="events" class="card">
+                    <img oncontextmenu="return false" (click)="eventDetailsPage(item.id)" class="card-img-top p-1"
+                        src="{{item.picture}}" alt="Card image cap" width="253"
+                        onerror="this.src='../../../../assets/images/default.png';">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-4 pr-2 event_date" (click)="eventDetailsPage(item.id)">
+                                <p class="e_month m-0">{{item.fromDate |date: 'MMMM' }}</p>
+                                <p class="e_date m-0">{{item.fromDate | date: 'dd-MM'}}</p>
+                                <p class="e_time m-0">{{item.fromDate | date: ' h:mm a'}}</p>
+                            </div>
+                            <div class="col-md-8  pl-2 event_details">
+                                <h6 class="card-title" (click)="eventDetailsPage(item.id)">{{item.name}}</h6>
+                                <p class="card-text" (click)="eventDetailsPage(item.id)" [innerHTML]="item.summary"></p>
+                                <!-- <button class="btn btn-ticket -hollow" (click)="buyTickets(item)">BUY TICKET</button> -->
+                                <img *ngIf="item.eventSource == 'ZEATR'" src="../../../../assets/images/event_logo.png"
+                                    width="25" class="custom_25 float-right d-inline" />
+                                <button class="btn btn-ticket -hollow"
+                                    *ngIf="item.availableTickets !== 0 && item.eventCancel == 0 && item.hasTickets"
+                                    (click)="buyTickets(item)">BUY TICKET</button>
+                                <button class="btn btn-ticket -hollow"
+                                    *ngIf="item.availableTickets == 0 && item.eventCancel == 0 && item.hasTickets"
+                                    style="cursor:text">SOLD OUT</button>
+                                <button class="btn btn-ticket -hollow" *ngIf="item.eventCancel == 1"
+                                    style="cursor:text">Cancelled</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row pt-4" *ngIf="showCarousel">
+            <div class="col-lg-12">
+                <owl-carousel-o [options]="upcomingEventOption">
+                    <ng-template carouselSlide *ngFor="let item of upcomingEventsData | orderBy: order; let i = index">
+                        <div id="events" class="card">
+                            <img oncontextmenu="return false" (click)="eventDetailsPage(item.id)"
+                                class="card-img-top p-1" src="{{item.picture}}" alt="Card image cap" width="253"
+                                onerror="this.src='../../../../assets/images/default.png';"
+                                (click)="eventDetailsPage(item.id)">
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-md-4 pr-2 event_date" (click)="eventDetailsPage(item.id)">
+                                        <p class="e_month m-0">{{item.fromDate | date: 'MMMM'}}</p>
+                                        <p class="e_date m-0">{{item.fromDate | date: 'dd-MM'}}</p>
+                                        <p class="e_time m-0">{{item.fromDate | date: ' h:mm a'}}</p>
+                                    </div>
+                                    <div class="col-md-8  pl-2 event_details">
+
+                                        <h6 class="card-title" (click)="eventDetailsPage(item.id)">{{item.name}}</h6>
+                                        <p class="card-text" (click)="eventDetailsPage(item.id)"
+                                            [innerHTML]="item.summary"></p>
+                                        <img *ngIf="item.eventSource == 'ZEATR'"
+                                            src="../../../../assets/images/event_logo.png" width="25"
+                                            class="custom_25 d-inline float-right" />
+                                        <button class="btn btn-ticket -hollow"
+                                            *ngIf="item.availableTickets !== 0 && item.eventCancel == 0 && item.hasTickets"
+                                            (click)="buyTickets(item)">BUY TICKET</button>
+                                        <button class="btn btn-ticket -hollow"
+                                            *ngIf="item.availableTickets == 0 && item.eventCancel == 0 && item.hasTickets"
+                                            style="cursor:text">SOLD OUT</button>
+                                        <button class="btn btn-ticket -hollow" *ngIf="item.eventCancel == 1"
+                                            style="cursor:text">Cancelled</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </ng-template>
+
+                </owl-carousel-o>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-lg-12 text-center mt-4">
+                <button class="btn btn-load" (click)="eventListingPage()">LOAD MORE</button>
+            </div>
+        </div>
+    </div>
+</section>

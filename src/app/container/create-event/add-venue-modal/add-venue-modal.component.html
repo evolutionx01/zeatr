@@ -1,0 +1,73 @@
+<div class="modal-header">
+  <h4 class="modal-title">Add Venue</h4>
+  <button type="button" class="close" aria-label="Close" (click)="activeModal.dismiss(venueForm)">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+<!-- 
+<div class="container">
+  <h1>Angular 2 + Google Maps Places Autocomplete</h1>
+  <div class="form-group">
+    <input placeholder="search for location" autocorrect="off" autocapitalize="off" spellcheck="off" type="text"
+      class="form-control" #search [formControl]="searchControl">
+  </div>
+
+</div> -->
+<!-- <app-google-map></app-google-map>
+<auto-complete (setAddress)="getAddress($event)" adressType="geocode"></auto-complete> -->
+<div class="modal-body pb-4">
+  <form [formGroup]="venueForm">
+    <div class="form-group">
+      <label>Venue Location</label>
+      <input placeholder="search for location" autocorrect="off" autocapitalize="off" spellcheck="off" type="text"
+        class="form-control" #search placeholder="Venue Name" formControlName="name" (blur)="isVenueExists()">
+      <small class="text-danger form-text" *ngIf="isCreated">Venue Location already created</small>
+
+    </div>
+    <div class="-form-group">
+      <agm-map [latitude]="latitude" [longitude]="longitude" [scrollwheel]="false" [zoom]="zoom">
+        <agm-marker [latitude]="latitude" [longitude]="longitude"></agm-marker>
+      </agm-map>
+    </div>
+
+    <!-- <div class="form-group">
+      <label>Venue Location</label>
+      <input type="text" class="form-control" placeholder="Venue Name" formControlName="name" (blur)="isVenueExists()">
+      <small class="text-danger form-text" *ngIf="isCreated">Venue Location already created</small>
+    </div> -->
+    <div class="form-group">
+      <label>Venue Parking Capacity</label>
+      <input type="text" class="form-control" placeholder="Venue Parking Capacity" formControlName="parkingCapacity">
+    </div>
+    <div class="form-group">
+      <label>Venue Seating Capacity</label>
+      <input type="text" class="form-control" placeholder="Venue Seating Capacity" formControlName="seatingCapacity">
+    </div>
+    <div class="form-group">
+      <label>Description</label>
+      <textarea type="text" class="form-control textarea" placeholder="Short Summary about your service" cols="10"
+        rows="10" formControlName="description"></textarea>
+    </div>
+    <div class="col-md-6">
+      <figure>
+        <img oncontextmenu="return false" src="{{this.image}}"
+          onerror="this.src='../../../../assets/images/default.png';" alt="The Pulpit Rock" width="200">
+      </figure>
+      <button class="btn btn-primary btn-file">
+        Change Image
+        <input type="file" (change)="changeListener($event)" />
+      </button>
+    </div>
+    <div class="form-group">
+      <label>Add attributes for your service (Input and press Enter)</label>
+      <tag-input theme='bootstrap' [placeholder]="'Add attributes'" [secondaryPlaceholder]="'Enter Attributes'"
+        formControlName="tags">
+      </tag-input>
+      <small class="text-center">Press enter to add attributes.</small>
+    </div>
+    <div class="form-group">
+      <button type="submit" class="btn btn-add" [disabled]="venueForm.invalid || isCreated"
+        (click)="saveVenue()">{{value}}</button>
+    </div>
+  </form>
+</div>

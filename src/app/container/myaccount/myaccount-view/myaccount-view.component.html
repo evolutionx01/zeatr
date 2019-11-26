@@ -1,0 +1,1096 @@
+<section id="account">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-12">
+        <h4 class="mb-4">MY ACCOUNT</h4>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-lg-8" id="detailedArtist">
+        <ngb-tabset type="pills">
+          <ngb-tab>
+            <ng-template ngbTabTitle>MY PROFILE</ng-template>
+            <ng-template ngbTabContent>
+              <div class="row">
+                <div class="col-lg-2">
+                  <img oncontextmenu="return false" (click)="upload('profile')" src="{{ profilePicture }}"
+                    onerror="this.src='../../../../assets/images/default.png';" class="img-fluid img-custom" />
+                </div>
+                <div class="col-lg-10">
+                  <div class="row mb-4">
+                    <div class="col-lg-6">
+                      <h6 class="profileName">{{ accountName }}</h6>
+                      <p class="profileEmail mb-0">{{ accountMail }}</p>
+                    </div>
+                    <div class="col-lg-6">
+                      <div class="d-flex justify-content-end">
+                        <div class="follow" *ngIf="role !== 'Fan'">
+                          <span class="count">{{ followers }}</span>
+                          <span (click)="openFollowers()" class="countlabel">Followers</span>
+                        </div>
+                        <div class="follow">
+                          <span class="count">{{ following }}</span>
+                          <span (click)="openFollowing()" class="countlabel">Followings</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row mb-4">
+                    <div class="col-lg-12">
+                      <button *ngIf="role !== 'Fan'" class="btn btn-account -hollow mr-2"
+                        (click)="artistDetailPage(userID)">
+                        <span class="fas fa-eye mr-2"></span>Preview Profile
+                      </button>
+                      <button *ngIf="isPublic && role !== 'Fan'" class="btn btn-account mr-2" (click)="
+                          makePublicOrPrivate(userID, isPublic, 'profile')
+                        ">
+                        <i class="fas fa-lock-open mr-2"></i> Public
+                      </button>
+                      <button *ngIf="!isPublic && role !== 'Fan'" class="btn btn-account -hollow mr-2" (click)="
+                          makePublicOrPrivate(userID, isPublic, 'profile')
+                        ">
+                        <i class="fas fa-lock mr-2"></i> Private
+                      </button>
+                      <!-- <button class="btn btn-account -hollow mr-2" (click)="makePublicOrPrivate(userID,isPublic,'profile')">{{isPublic?'Make Profile Private':'Make Profile Public'}}</button> -->
+
+                      <button *ngIf="provider == 'zeatr'" class="btn btn-account -hollow mr-2"
+                        (click)="changePassword()">
+                        Change Password
+                      </button>
+                      <button *ngIf="role !== 'Fan'" class="btn btn-account -hollow mr-2" (click)="logout()">
+                        Change Subscription
+                      </button>
+                    </div>
+                  </div>
+                  <div class="row mb-4">
+                    <div class="col-lg-6">
+                      <ng-select [clearable]="false" [items]="cities3" bindLabel="name" bindValue="name"
+                        placeholder="Select city" [(ngModel)]="selectedCityName" (change)="onThemeChange($event)">
+                        <!-- <ng-template ng-header-tmp>
+                          Custom header
+                        </ng-template> -->
+                        <ng-template ng-label-tmp let-item="item">
+                          <img height="50" width="25" [src]="item.avatar" />
+                          <b>{{ item.name }}</b>
+                        </ng-template>
+                        <ng-template ng-option-tmp let-item="item" let-index="index">
+                          <img height="50" width="25" [src]="item.avatar" />
+                          <b>{{ item.name }}</b>
+                        </ng-template>
+                        <!-- <ng-template ng-footer-tmp>
+                          Custom footer
+                        </ng-template> -->
+                      </ng-select>
+                    </div>
+                    <div class="col-lg-6">
+                      <div class="float-right">
+                        <button *ngIf="role !== 'Fan' && !isroleActive" class="btn btn-account" (click)="createEvent()">
+                          ORGANIZE AN EVENT
+                        </button>
+                        <!-- <button *ngIf="role !== 'Fan' && !isroleActive" class="btn btn-account" (click)="requestRole()">Request Organise Event role</button> -->
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div *ngIf="role === 'Artist'" class="row py-4 borderBottom" id="artistDetails">
+                <div class="col-lg-3 ">
+                  <p class="font-weight-bold mb-0">
+                    Profile Status: {{ profileStatus }}%
+                  </p>
+                </div>
+                <div class="col-lg-9">
+                  <div class="progress">
+                    <div class="progress-bar bg-success" [ngStyle]="profilePercentage"></div>
+                  </div>
+                </div>
+              </div>
+              <div class="row py-4 borderBottom" id="artistDetails">
+                <div class="col-lg-12">
+                  <ngb-tabset type="pills">
+                    <ngb-tab>
+                      <ng-template ngbTabTitle>Basic Details</ng-template>
+                      <ng-template ngbTabContent>
+                        <form [formGroup]="artistDetails" (keydown.enter)="$event.preventDefault()">
+                          <div class="form-row">
+                            <div class="form-group col-md-4">
+                              <label>First Name*</label>
+                              <input type="text" formControlName="firstName" class="form-control"
+                                placeholder="First Name*" />
+
+                              <small class="text-danger form-text" *ngIf="
+                                  artistDetails.controls['firstName'].hasError(
+                                    'required'
+                                  ) &&
+                                  artistDetails.controls['firstName'].touched
+                                ">
+                                First Name is required.
+                              </small>
+                            </div>
+                            <div class="form-group col-md-4">
+                              <label>Last Name</label>
+                              <input type="text" formControlName="lastName" class="form-control"
+                                placeholder="Last Name" />
+                            </div>
+                          </div>
+                          <div class="form-row" *ngIf="role !== 'Fan'">
+                            <div class="form-group col-md-8">
+                              <label>Artist Short Name*</label>
+                              <div *ngIf="showField">
+                                <input type="text" formControlName="slug" class="form-control"
+                                  placeholder="Enter artist short name" (keyup.enter)="setTargetUrl()"
+                                  (input)="checkSlug()" />
+                                <small class="text-danger form-text" *ngIf="
+                                    artistDetails.controls['slug'].hasError(
+                                      'required'
+                                    ) && artistDetails.controls['slug'].touched
+                                  ">
+                                  Artist Short Name is mandatory.
+                                </small>
+                                <small *ngIf="slugExist" class="text-danger form-text">Short Name is already
+                                  exists.</small>
+                                <small id="emailHelp" class="form-text text-muted">Please enter short name and press
+                                  enter</small>
+                              </div>
+                              <div *ngIf="!showField">
+                                <a href="{{ targetUrl }}" target="_blank">{{ artistDetails.controls["slug"].value }}
+                                </a>
+                                <i class="fas fa-pencil-alt" (click)="showField = true" title="edit"></i>
+                              </div>
+                            </div>
+                          </div>
+                          <!-- <div class="form-row">
+                              <div class="form-group col-md-8">
+                                <label>Email ID*</label>
+                                <input formControlName="email" type="text" class="form-control" placeholder="Email ID*">
+                                <small class="text-danger form-text" *ngIf="artistDetails.controls['email'].hasError('required') && artistDetails.controls['email'].touched">
+                                    Email ID is required.
+                                </small>
+                                                                        <small class="text-danger form-text" *ngIf="artistDetails.controls['email'].hasError('pattern') && artistDetails.controls['email'].touched">
+                                    Please enter a valid email. 
+                                </small>
+                                                                    </div>
+
+                                                                </div> -->
+                          <div class="form-row">
+                            <div class="form-group col-md-3">
+                              <label>Phone Number</label>
+                              <input formControlName="phonenumber" type="text" class="form-control"
+                                placeholder="Phone Number" />
+                              <small class="text-danger form-text" *ngIf="
+                                  artistDetails.controls[
+                                    'phonenumber'
+                                  ].hasError('pattern') &&
+                                  artistDetails.controls['phonenumber'].touched
+                                ">
+                                Enter Valid Phone Number.
+                              </small>
+                            </div>
+                            <div class="form-group col-md-1">
+                              <ui-switch size="small" color="#f26633" (change)="switchToggle('phonenumber')"
+                                labelOn="Private" labelOff="Public" [checked]="phoneToggle"></ui-switch>
+                            </div>
+
+                            <div class="form-group col-md-3">
+                              <label>Mobile Number</label>
+                              <input formControlName="mobilenumber" type="text" class="form-control"
+                                placeholder="Mobile Number" />
+                              <small class="text-danger form-text" *ngIf="
+                                  artistDetails.controls[
+                                    'mobilenumber'
+                                  ].hasError('pattern') &&
+                                  artistDetails.controls['mobilenumber'].touched
+                                ">
+                                Enter Valid Mobile Number.
+                              </small>
+                            </div>
+                            <div class="form-group col-md-1">
+                              <ui-switch size="small" color="#f26633" (change)="switchToggle('mobilenumber')"
+                                [checked]="mobileToggle" labelOn="Private" labelOff="Public">
+                              </ui-switch>
+                            </div>
+                          </div>
+                          <div class="form-row">
+                            <div class="form-group col-md-3">
+                              <label>Fax</label>
+                              <input formControlName="fax" type="text" class="form-control" placeholder="Fax number" />
+                            </div>
+                            <div class="form-group col-md-1">
+                              <ui-switch size="small" color="#f26633" (change)="switchToggle('fax')" labelOn="Private"
+                                labelOff="Public" [checked]="faxToggle"></ui-switch>
+                            </div>
+
+                            <div class="form-group col-md-3">
+                              <label>Website</label>
+                              <input formControlName="website" type="text" class="form-control" placeholder="Website" />
+                              <small class="text-danger form-text" *ngIf="
+                                                                        artistDetails.controls[
+                                                                          'website'
+                                                                        ].hasError('pattern') &&
+                                                                        artistDetails.controls['website'].touched
+                                                                      ">
+                                Enter Valid Domain.
+                              </small>
+                            </div>
+                            <div class="form-group col-md-1">
+                              <ui-switch size="small" color="#f26633" (change)="switchToggle('website')"
+                                labelOn="Private" labelOff="Public" [checked]="websiteToggle"></ui-switch>
+                            </div>
+                          </div>
+                          <div class="form-row">
+                            <div class="form-group col-md-3">
+                              <label>Date of birth</label>
+                              <div class="input-group">
+                                <input class="form-control" placeholder="Date Of Birth" [owlDateTimeTrigger]="dt1"
+                                  [owlDateTime]="dt1" formControlName="dob" />
+                                <owl-date-time [pickerType]="'calendar'" #dt1></owl-date-time>
+                                <!-- <input class="form-control" type="text" name="dp3" ngbDatepicker #d3="ngbDatepicker" formControlName="dob" id="startDate" placement="top-right" placeholder="Date of Birth" autocomplete="off" /> -->
+                                <!-- <div class="input-group-append"> -->
+                                <!-- <button class="btn calendar" (click)="d3.toggle()"> -->
+                                <!-- <i class="fas fa-calendar-alt"></i> -->
+                                <!-- </button> -->
+                                <!-- </div> -->
+                              </div>
+                            </div>
+                            <div class="form-group col-md-1">
+                              <ui-switch size="small" color="#f26633" (change)="switchToggle('dob')" labelOn="Private"
+                                labelOff="Public" [checked]="dobToggle"></ui-switch>
+                            </div>
+
+                            <div class="form-group col-md-3">
+                              <label>Gender</label>
+                              <ng-select [items]="genderList" placeholder="Gender*" formControlName="gender"
+                                [clearable]="false">
+                              </ng-select>
+                              <!-- <input formControlName="gender" type="text" class="form-control" placeholder="Gender*"> -->
+                              <small class="text-danger form-text" *ngIf="
+                                  artistDetails.controls['gender'].hasError(
+                                    'required'
+                                  ) && artistDetails.controls['gender'].touched
+                                ">
+                                Gender is required.
+                              </small>
+                            </div>
+                            <div class="form-group col-md-1">
+                              <ui-switch size="small" color="#f26633" (change)="switchToggle('gender')"
+                                labelOn="Private" labelOff="Public" [checked]="genderToggle"></ui-switch>
+                            </div>
+                          </div>
+                        </form>
+                      </ng-template>
+                    </ngb-tab>
+                    <ngb-tab *ngIf="role !== 'Fan'">
+                      <ng-template ngbTabTitle>Professional Details</ng-template>
+                      <ng-template ngbTabContent>
+                        <form [formGroup]="artistProfession">
+                          <div class="form-row">
+                            <div class="form-group col-md-8">
+                              <label>Category<span *ngIf="role !== 'Fan'">*</span></label>
+                              <ng-select [items]="categoriesList" bindLabel="category" placeholder="Category*"
+                                formControlName="category" [clearable]="false"
+                                (change)="getSubCategoriesbasedoncatid($event)">
+                              </ng-select>
+                              <small class="text-danger form-text" *ngIf="
+                                  artistProfession.controls[
+                                    'category'
+                                  ].hasError('required') &&
+                                  artistProfession.controls['category'].touched
+                                ">
+                                Category is required.
+                              </small>
+                            </div>
+                          </div>
+                          <div class="form-row">
+                            <div class="form-group col-md-8">
+                              <label>Genre<span *ngIf="role !== 'Fan'">*</span></label>
+                                                                    <ng-select [items]="subcategoriesList" bindLabel="subcategory" placeholder="Genre*" formControlName="genre" [clearable]="false">
+                                                                    </ng-select>
+                                                                    <small class="text-danger form-text" *ngIf="
+                                  artistProfession.controls['genre'].hasError(
+                                    'required'
+                                  ) &&
+                                  artistProfession.controls['genre'].touched
+                                ">
+                                Genre is required.
+                              </small>
+                                                                </div>
+                                                            </div>
+                                                            <div class="form-row">
+                                                                <div class="form-group col-md-8">
+                                                                    <label>Sub Genre</label>
+                                                                    <input formControlName="sub_genre" type="text" class="form-control" placeholder="Sub Genre" />
+                                                                </div>
+                                                            </div>
+                                                            <div class="form-row">
+                                                                <div class="form-group col-md-7">
+                                                                    <label>Schools</label>
+                                                                    <tag-input formControlName="schools" theme="bootstrap" [placeholder]="'Add Schools'" [secondaryPlaceholder]="'Schools'" placement="top" ngbTooltip="Add your Schools">
+                                                                    </tag-input>
+                                                                    <small class="form-text">Press enter to add schools.</small
+                              >
+                            </div>
+                            <div class="form-group col-md-1">
+                              <ui-switch size="small" color="#f26633" (change)="switchToggle('schools')"
+                                labelOn="Private" labelOff="Public" [checked]="schoolsToggle"></ui-switch>
+                            </div>
+                          </div>
+                          <div class="form-row">
+                            <div class="form-group col-md-7">
+                              <label>Certificates</label>
+                              <tag-input formControlName="certificates" theme="bootstrap"
+                                [placeholder]="'Add Certificates'" [secondaryPlaceholder]="'Certificates'"
+                                placement="top" ngbTooltip="Add your Certificates">
+                              </tag-input>
+                              <small class="form-text">Press enter to add Certificates.</small>
+                                                                </div>
+                                                                <div class="form-group col-md-1">
+                                                                    <ui-switch size="small" color="#f26633" (change)="switchToggle('certificates')" labelOn="Private" labelOff="Public" [checked]="certificatesToggle"></ui-switch>
+                                                                </div>
+                                                            </div>
+                                                            <div class="form-row">
+                                                                <div class="form-group col-md-7">
+                                                                    <label>Achievements</label>
+                                                                    <tag-input formControlName="achievements" theme="bootstrap" [placeholder]="'Add Achievements'" [secondaryPlaceholder]="'Achievements'" placement="top" ngbTooltip="Add your Achievements">
+                                                                    </tag-input>
+                                                                    <small class="form-text">Press enter to add achievements.</small>
+                                                                </div>
+                                                                <div class="form-group col-md-1">
+                                                                    <ui-switch size="small" color="#f26633" (change)="switchToggle('achievements')" labelOn="Private" labelOff="Public" [checked]="acheivementsToggle"></ui-switch>
+                                                                </div>
+                                                            </div>
+                                                            <div class="form-row">
+                                                                <div class="form-group col-md-7">
+                                                                    <label>Awards</label>
+                                                                    <tag-input formControlName="awards" theme="bootstrap" [placeholder]="'Add Awards'" [secondaryPlaceholder]="'Awards'" placement="top" ngbTooltip="Add your Awards">
+                                                                    </tag-input>
+                                                                    <small class="form-text">Press enter to add awards.</small>
+                                                                </div>
+                                                                <div class="form-group col-md-1">
+                                                                    <ui-switch size="small" color="#f26633" (change)="switchToggle('awards')" labelOn="Private" labelOff="Public" [checked]="awardsToggle"></ui-switch>
+                                                                </div>
+                                                            </div>
+                                                            <div class="form-row">
+                                                                <div class="form-group col-md-7">
+                                                                    <label>Talent Synopsis</label>
+                                                                    <ejs-richtexteditor formControlName="talentSynopsis" placeholder="Talent Synopsis" placement="top" ngbTooltip="Writeup your Talent Synopsis">
+                                                                    </ejs-richtexteditor>
+                                                                </div>
+                                                            </div>
+                                                            <div class="form-row">
+                                                                <div class="form-group col-md-7">
+                                                                    <label>Trainings</label>
+                                                                    <tag-input formControlName="trainings" theme="bootstrap" [placeholder]="'Add Trainings'" [secondaryPlaceholder]="'Trainings'" placement="top" ngbTooltip="Add your Trainings">
+                                                                    </tag-input>
+                                                                    <small class="form-text">Press enter to add trainings.</small>
+                                                                </div>
+                                                                <div class="form-group col-md-1">
+                                                                    <ui-switch size="small" color="#f26633" (change)="switchToggle('trainings')" labelOn="Private" labelOff="Public" [checked]="trainingsToggle"></ui-switch>
+                                                                </div>
+                                                            </div>
+                                                            <div class="form-row">
+                                                                <div class="form-group col-md-7">
+                                                                    <label>Profile Writeup</label>
+                                                                    <ejs-richtexteditor formControlName="profile_writeup" placeholder="Profile Writeup" placement="top" ngbTooltip="About Profile Summary">
+                                                                    </ejs-richtexteditor>
+                                                                </div>
+                                                            </div>
+                                                            <div class="form-row">
+                                                                <div class="form-group col-md-7">
+                                                                    <label>Future Performances</label>
+                                                                    <input formControlName="future_performances" type="text" class="form-control" placeholder="Future Performances" placement="top" ngbTooltip="Enter your Future Performances" />
+                                                                </div>
+                                                                <div class="form-group col-md-1">
+                                                                    <ui-switch size="small" color="#f26633" (change)="switchToggle('future_performances')" labelOn="Private" labelOff="Public" [checked]="futurePerformancesToggle"></ui-switch>
+                                                                </div>
+                                                            </div>
+                                                            <div class="form-row">
+                                                                <div class="form-group col-md-7">
+                                                                    <label>Past Performances</label>
+                                                                    <input formControlName="past_performances" type="text" class="form-control" placeholder="Past Performances" placement="top" ngbTooltip="Enter your Past Performances" />
+                                                                </div>
+                                                                <div class="form-group col-md-1">
+                                                                    <ui-switch size="small" color="#f26633" (change)="switchToggle('past_performances')" labelOn="Private" labelOff="Public" [checked]="pastPerformancesToggle"></ui-switch>
+                                                                </div>
+                                                            </div>
+                                                        </form>
+                                                    </ng-template>
+                                                </ngb-tab>
+                                                <ngb-tab *ngIf="role == 'Fan'">
+                                                    <ng-template ngbTabTitle>Likes</ng-template>
+                                                    <ng-template ngbTabContent>
+                                                        <form [formGroup]="likesForm">
+                                                            <div class="form-row">
+                                                                <div class="card form-group col-md-12" *ngFor="let item of categories">
+                                                                    <div class="card-header" id="{{ item.category }}">
+                                                                        <span [ngClass]="
+                                    item.isSelected
+                                      ? 'btn btn-account mr-2 cat'
+                                      : 'btn btn-account -hollow mr-2 cat'
+                                  " (click)="getSelectedAll(item.category)">
+                                  {{ item.category }}
+                                </span>
+                                                                        <br />
+                                                                        <hr />
+
+                                                                        <span [ngClass]="
+                                    subitem.isSelected
+                                      ? 'btn btn-account mr-2 cat'
+                                      : 'btn btn-account -hollow mr-2 cat'
+                                  " *ngFor="let subitem of item.subCategores" (click)="
+                                    getSelectedOne(
+                                      item.category,
+                                      subitem.subcategory
+                                    )
+                                  ">
+                                  {{ subitem.subcategory }}
+                                </span>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </form>
+                                                    </ng-template>
+                                                </ngb-tab>
+                                                <ngb-tab>
+                                                    <ng-template ngbTabTitle>Social</ng-template>
+                                                    <ng-template ngbTabContent>
+                                                        <form [formGroup]="social">
+                                                            <div class="form-row">
+                                                                <div class="form-group col-md-7">
+                                                                    <label>Facebook</label>
+                                                                    <input formControlName="facebook" type="text" class="form-control" placeholder="Facebook" />
+                                                                </div>
+                                                                <div class="form-group col-md-1">
+                                                                    <ui-switch size="small" color="#f26633" (change)="switchToggle('facebook')" labelOn="Private" labelOff="Public" [checked]="facebookToggle"></ui-switch>
+                                                                </div>
+                                                            </div>
+                                                            <div class="form-row">
+                                                                <div class="form-group col-md-7">
+                                                                    <label>Twitter</label>
+                                                                    <input formControlName="twitter" type="text" class="form-control" placeholder="Twitter" />
+                                                                </div>
+                                                                <div class="form-group col-md-1">
+                                                                    <ui-switch size="small" color="#f26633" (change)="switchToggle('twitter')" labelOn="Private" labelOff="Public" [checked]="twitterToggle"></ui-switch>
+                                                                </div>
+                                                            </div>
+                                                            <div class="form-row">
+                                                                <div class="form-group col-md-7">
+                                                                    <label>Instagram</label>
+                                                                    <input formControlName="instagram" type="text" class="form-control" placeholder="Instagram" />
+                                                                </div>
+                                                                <div class="form-group col-md-1">
+                                                                    <ui-switch size="small" color="#f26633" (change)="switchToggle('instagram')" labelOn="Private" labelOff="Public" [checked]="instagramToggle"></ui-switch>
+                                                                </div>
+                                                            </div>
+                                                            <div class="form-row">
+                                                                <div class="form-group col-md-7">
+                                                                    <label>Google</label>
+                                                                    <input formControlName="google" type="text" class="form-control" placeholder="Google" />
+                                                                </div>
+                                                                <div class="form-group col-md-1">
+                                                                    <ui-switch size="small" color="#f26633" (change)="switchToggle('google')" labelOn="Private" labelOff="Public" [checked]="googleToggle"></ui-switch>
+                                                                </div>
+                                                            </div>
+                                                        </form>
+                                                    </ng-template>
+                                                </ngb-tab>
+                                                <ngb-tab>
+                                                    <ng-template ngbTabTitle>Address</ng-template>
+                                                    <ng-template ngbTabContent>
+                                                        <form [formGroup]="addressDetails">
+                                                            <div class="form-row">
+                                                                <div class="form-group col-md-7">
+                                                                    <label>Address Line 1</label>
+                                                                    <input formControlName="street1" type="text" class="form-control" placeholder="Address Line 1" />
+                                                                </div>
+                                                                <div class="form-group col-md-1">
+                                                                    <ui-switch size="small" color="#f26633" (change)="switchToggle('street1')" labelOn="Private" labelOff="Public" [checked]="address1Toggle"></ui-switch>
+                                                                </div>
+                                                            </div>
+                                                            <div class="form-row">
+                                                                <div class="form-group col-md-7">
+                                                                    <label>Address Line 2</label>
+                                                                    <input formControlName="street2" type="text" class="form-control" placeholder="Address Line 2" />
+                                                                </div>
+                                                                <div class="form-group col-md-1">
+                                                                    <ui-switch size="small" color="#f26633" (change)="switchToggle('street2')" labelOn="Private" labelOff="Public" [checked]="address2Toggle"></ui-switch>
+                                                                </div>
+                                                            </div>
+                                                            <div class="form-row">
+                                                                <div class="form-group col-md-3">
+                                                                    <label>City<span *ngIf="role !== 'Fan'">*</span></label>
+                                                                    <input formControlName="city" type="text" class="form-control" placeholder="City" />
+                                                                    <small class="text-danger form-text" *ngIf="
+                                  addressDetails.controls['city'].hasError(
+                                    'required'
+                                  ) && addressDetails.controls['city'].touched
+                                ">
+                                City is required.
+                              </small>
+                              <small class="text-danger form-text" *ngIf="
+                                  addressDetails.controls['city'].hasError(
+                                    'pattern'
+                                  ) && addressDetails.controls['city'].touched
+                                ">Enter Valid City</small>
+                            </div>
+                            <div class="form-group col-md-1">
+                              <ui-switch size="small" color="#f26633" (change)="switchToggle('city')" labelOn="Private"
+                                labelOff="Public" [checked]="cityToggle"></ui-switch>
+                            </div>
+
+                            <div class="form-group col-md-3">
+                              <label>State<span *ngIf="role !== 'Fan'">*</span></label>
+                              <input formControlName="state" type="text" class="form-control" placeholder="State" />
+                              <small class="text-danger form-text" *ngIf="
+                                  addressDetails.controls['state'].hasError(
+                                    'required'
+                                  ) && addressDetails.controls['state'].touched
+                                ">
+                                State is required.
+                              </small>
+                              <small class="text-danger form-text" *ngIf="
+                                  addressDetails.controls['state'].hasError(
+                                    'pattern'
+                                  ) && addressDetails.controls['state'].touched
+                                ">
+                                Enter Valid State.
+                              </small>
+                            </div>
+                            <div class="form-group col-md-1">
+                              <ui-switch size="small" color="#f26633" (change)="switchToggle('state')" labelOn="Private"
+                                labelOff="Public" [checked]="stateToggle"></ui-switch>
+                            </div>
+                          </div>
+                          <div class="form-row">
+                            <div class="form-group col-md-3">
+                              <label>Country<span *ngIf="role !== 'Fan'">*</span></label>
+                              <input formControlName="country" type="text" class="form-control" placeholder="Country" />
+                              <small class="text-danger form-text" *ngIf="
+                                  addressDetails.controls['country'].hasError(
+                                    'required'
+                                  ) &&
+                                  addressDetails.controls['country'].touched
+                                ">
+                                Country is required.
+                              </small>
+                              <small class="text-danger form-text" *ngIf="
+                                  addressDetails.controls['country'].hasError(
+                                    'pattern'
+                                  ) &&
+                                  addressDetails.controls['country'].touched
+                                ">
+                                Enter Valid Country.
+                              </small>
+                            </div>
+                            <div class="form-group col-md-1">
+                              <ui-switch size="small" color="#f26633" (change)="switchToggle('country')"
+                                labelOn="Private" labelOff="Public" [checked]="countryToggle"></ui-switch>
+                            </div>
+                            <div class="form-group col-md-3">
+                              <label>Zipcode</label>
+                              <input formControlName="zipcode" type="text" class="form-control" placeholder="Zip Code"
+                                maxlength="7" />
+                              <small class="text-danger form-text" *ngIf="
+                                  addressDetails.controls['zipcode'].hasError(
+                                    'pattern'
+                                  ) &&
+                                  addressDetails.controls['zipcode'].touched
+                                ">
+                                Please enter a valid Zipcode.
+                              </small>
+                            </div>
+                            <div class="form-group col-md-1">
+                              <ui-switch size="small" color="#f26633" (change)="switchToggle('zipcode')"
+                                labelOn="Private" labelOff="Public" [checked]="zipcodeToggle"></ui-switch>
+                            </div>
+                          </div>
+                        </form>
+                      </ng-template>
+                    </ngb-tab>
+                  </ngb-tabset>
+                </div>
+              </div>
+
+              <div class="row py-4 borderBottom" id="artistDetails">
+                <div class="col-lg-12">
+                  <button class="btn btn-update" (click)="updateAccount()" [disabled]="
+                      artistDetails.invalid ||
+                      artistProfession.invalid ||
+                      addressDetails.invalid || slugExist
+                    ">
+                    UPDATE
+                  </button>
+                  <span> * fields are mandatory.</span>
+                </div>
+              </div>
+            </ng-template>
+          </ngb-tab>
+
+          <ngb-tab *ngIf="role == 'Venue Owner'">
+            <ng-template ngbTabTitle>MY VENUES</ng-template>
+            <ng-template ngbTabContent>
+              <button class="btn btn-account" (click)="addVenue()">
+                Add Venue
+              </button>
+              <div class="tab-pane active show" id="profile-services" *ngFor="let item of listOfVenue; let i = index">
+                <div id="profile-services-list" class="row" style="margin-top: 10px;">
+                  <div class="list-group-item list-group-item-action flex-column align-items-start"
+                    style="border: 1px solid #e5e5e5;">
+                    <div id="serviceholder106" class="d-flex w-100 justify-content-between">
+                      <div class="col-sm-8">
+                        <strong>{{ item.name }} </strong>
+                        <br />
+                        <button class="btn btn-account mr-2" *ngIf="!item.public_"
+                          (click)="makePublicOrPrivateVenue(item.id)">
+                          <i class="fas fa-lock mr-2"></i>
+                          Private
+                        </button>
+                        <button class="btn btn-account mr-2" *ngIf="item.public_"
+                          (click)="makePublicOrPrivateVenue(item.id)">
+                          <i class="fas fa-lock-open mr-2"></i>
+                          Public
+                        </button>
+                        <button class="btn btn-edit pr-3">
+                          <i class="fas fa-edit" (click)="updateVenue(i)"></i>
+                          <!-- <i
+                          class="fas fa-pencil-alt mr-2"
+                          
+                        ></i> -->
+                        </button>
+
+                        <br /> {{ item.description }}
+                        <br />
+                        <small>
+                          <hr />
+                          <strong>Seating Capacity: </strong>
+                          <span>{{ item.seatingCapacity }}</span>
+                          <hr />
+                          <strong>Parking Capacity: </strong>
+                          <span>{{ item.parkingCapacity }}</span>
+                          <hr />
+                          <strong>Attributes:</strong>
+                          <span *ngIf="!isedit">
+                            <span *ngFor="let x of item.tags">{{ x }},</span>
+                          </span>
+                        </small>
+                      </div>
+                      <div class="col-sm-4">
+                        <img oncontextmenu="return false" class="pull-right img-fluid" src="{{ item.picture }}"
+                          onerror="this.src='../../../../assets/images/default.png'" />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </ng-template>
+          </ngb-tab>
+          <ngb-tab *ngIf="role == 'Other Services'">
+            <!-- <ngb-tab> -->
+            <ng-template ngbTabTitle>OUR SERVICES</ng-template>
+            <ng-template ngbTabContent>
+              <button class="btn btn-account" (click)="addService()">
+                Add Service
+              </button>
+              <div class="tab-pane active show" id="profile-services"
+                *ngFor="let item of listOfServices; let i = index">
+                <div id="profile-services-list" class="row" style="margin-top: 10px;">
+                  <div class="list-group-item list-group-item-action flex-column align-items-start"
+                    style="border: 1px solid #e5e5e5;">
+                    <div id="serviceholder106" class="d-flex w-100 justify-content-between">
+                      <div class="col-sm-8">
+                        <strong>{{ item.name }} </strong>
+                        <button class="btn btn-edit pr-3" (click)="updateService(i)" title="Edit">
+                          <i class="fas fa-edit"></i>
+                        </button>
+                        <button class="btn btn-edit mr-2" (click)="delService(item.id)" title="delete">
+                          <i class="fas fa-trash-alt mr-2"></i>
+                        </button>
+                        <br />
+                        <button *ngIf="item.public_" class="btn btn-account mr-2"
+                          (click)="makePublicOrPrivate_Service(item.id)">
+                          <i class="fas fa-lock-open mr-2"> Public</i>
+                        </button>
+                        <button *ngIf="!item.public_" class="btn btn-account mr-2"
+                          (click)="makePublicOrPrivate_Service(item.id)">
+                          <i class="fas fa-lock mr-2"> Private</i>
+                        </button>
+
+                        <hr />
+                        <span style="word-wrap: break-word">{{
+                          item.description
+                        }}</span>
+                        <br />
+                        <small>
+                          <hr />
+                          <strong>Quantity Available: </strong>
+                          <span>{{ item.quantityAvailable }}</span>
+                          <hr />
+                          <strong>Cost: </strong>
+                          <span>{{ item.cost }}</span>
+                          <hr />
+                          <strong>Lead Time: </strong>
+                          <span>{{ item.leadTimeView }}</span>
+                          <hr />
+                          <strong>Prerequirement: </strong>
+                          <span>{{ item.preRequirement }}</span>
+                          <hr />
+                          <strong>Delivery: </strong>
+                          <span>{{ item.delivery }}</span>
+                          <hr />
+                          <strong>Prepayment Required: </strong>
+                          <span>{{ item.prepayment }}</span>
+                          <hr />
+                        </small>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </ng-template>
+          </ngb-tab>
+          <ngb-tab *ngIf="role !== 'Fan'">
+            <ng-template ngbTabTitle>VIDEO</ng-template>
+            <ng-template ngbTabContent>
+              <div class="row mb-4">
+                <div class="col-lg-12">
+                  <h6>Upload Video</h6>
+                  <button class="btn btn-upload mr-4" (click)="upload('video')">
+                    Upload
+                  </button>
+                  <button class="btn btn-youtube" (click)="upload('yt')">You Tube</button>
+                </div>
+              </div>
+              <div class="row pt-4" id="imageVideoView">
+                <div style="min-width:222px" class="col-lg-3 col-md-6 col-sm-6  col-xs-12"
+                  *ngFor="let item of videoGallery; let i = index">
+                  <div id="accountVideo" class="card">
+                    <div style="position:relative;" (click)="showVideo(item)">
+                      <img oncontextmenu="return false" class="img-fluid" src="{{ item.thumbnail }}"
+                        onerror="this.src='../../../../assets/images/default.png';" />
+                    </div>
+                    <div class="card-body p-0">
+                      <p class="card-title mb-0">{{ item.title }}</p>
+                      <ui-switch *ngIf="item._public" class="mr-2" size="small" color="#f26633" (change)="
+                          makePublicOrPrivate(item.id, item._public, 'video')
+                        " [checked]="false" labelOff="Public"></ui-switch>
+                      <ui-switch *ngIf="!item._public" class=" mr-2" size="small" color="#f26633" (change)="
+                          makePublicOrPrivate(item.id, item._public, 'video')
+                        " [checked]="true" labelOn="Private"></ui-switch>
+                      <!-- <button
+                        *ngIf="item._public"
+                        class="btn btn-edit mr-2"
+                        (click)="
+                          makePublicOrPrivate(item.id, item._public, 'video')
+                        ">
+                        <i class="fas fa-lock-open mr-2"></i>
+                      </button>
+                      <button *ngIf="!item._public" class="btn btn-edit mr-2" (click)="
+                          makePublicOrPrivate(item.id, item._public, 'video')
+                        ">
+                        <i class="fas fa-lock mr-2"></i>
+                      </button> -->
+                      <button class="btn btn-edit mr-2" (click)="deleteService(item, 'video', i)" title="delete">
+                        <i class="fas fa-trash-alt mr-2"></i>
+                      </button>
+                      <button class="btn btn-edit mr-2">
+                        <share-buttons [url]="item.location" [include]="['twitter', 'facebook', 'whatsapp']">
+                        </share-buttons>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </ng-template>
+          </ngb-tab>
+          <ngb-tab *ngIf="role !== 'Fan'">
+            <ng-template ngbTabTitle>PHOTO GALLERY</ng-template>
+            <ng-template ngbTabContent>
+              <div class="row mb-4">
+                <div class="col-lg-12">
+                  <h6>Upload Photo</h6>
+                  <!-- <button class="btn btn-secondary btn-file">
+                    Upload
+                    <input type="file">
+                  </button> -->
+                  <button class="btn btn-upload mr-4" (click)="upload('img')">
+                    Upload
+                  </button>
+                </div>
+              </div>
+              <div class="row pt-4" id="imageVideoView">
+                <div style="min-width:222px" class="col-lg-3 col-md-6 col-sm-6  col-xs-12"
+                  *ngFor="let item of imageGallery; let i = index">
+                  <div id="accountImage" class="card">
+                    <img oncontextmenu="return false" class="img-fluid" src="{{ item.location }}"
+                      onerror="this.src='../../../../assets/images/default.png';" (click)="open(i)"
+                      oncontextmenu="return false" />
+                    <div class="card-body p-0">
+                      <p class="card-title mb-0">{{ item.title }}</p>
+                      <ui-switch *ngIf="item._public" class="mr-2" size="small" color="#f26633" (change)="
+                          makePublicOrPrivate(item.id, item._public, 'picture')
+                        " [checked]="false" labelOff="Public"></ui-switch>
+                      <ui-switch *ngIf="!item._public" class=" mr-2" size="small" color="#f26633" (change)="
+                          makePublicOrPrivate(item.id, item._public, 'picture')
+                        " [checked]="true" labelOn="Private"></ui-switch>
+                      <button class="btn btn-edit mr-2" (click)="deleteService(item, 'picture', i)">
+                        <i class="fas fa-trash-alt mr-2" title="delete"></i>
+                      </button>
+                      <button class="btn btn-edit mr-2">
+                        <share-buttons [url]="item.location" [include]="['twitter', 'facebook', 'whatsapp']">
+                        </share-buttons>
+                      </button>
+                      <!-- <button class="btn btn-account -hollow mr-2" (click)="makePublicOrPrivate(item.id,item._public,'picture')">MAKE {{(item._public)?'PRIVATE':'PUBLIC'}}</button> -->
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </ng-template>
+          </ngb-tab>
+          <ngb-tab id="eventstab" *ngIf="role !== 'Fan'">
+            <ng-template ngbTabTitle>EVENTS</ng-template>
+            <ng-template ngbTabContent>
+              <!-- <button class="btn" (click)="onViewChange()">List</button>
+              <button class="btn" (click)="onViewChange()">Grid</button> -->
+              <div id="artistEvent" class="row view-group pt-4">
+                <div *ngFor="let item of eventDetails; let i = index" [ngClass]="{ 'list-group-item': list }"
+                  class="item col-xs-4 col-lg-4">
+                  <div class="thumbnail card">
+                    <div class="img-event">
+                      <img oncontextmenu="return false" class="group list-group-image img-fluid"
+                        src="{{ item.picture }}" onerror="this.src='../../../../assets/images/default.png';" />
+                    </div>
+                    <div class="caption card-body">
+                      <h6 class="group card-title inner list-group-item-heading">
+                        {{ item.name }}
+                        <span *ngIf="item.eventCancel" style="font-size:10px;color:maroon">(Cancelled)</span>
+                        <button class="btn btn-edit mr-2">
+                          <share-buttons [url]="item.url" [include]="[
+                              'twitter',
+                              'facebook',
+                              'email',
+                              'whatsapp'
+                            ]"></share-buttons>
+                        </button>
+                      </h6>
+
+                      <button *ngIf="!item.published" class="btn btn-event-action mr-3" (click)="
+                          makePublishOrUnpublish(item.id, item.published)
+                        " [disabled]="item.createdbyId != createdbyID">
+                        <i class="fas fa-eye-slash mr-1"></i> Unpublished
+                      </button>
+                      <button *ngIf="item.published" class="btn btn-event-action mr-3" (click)="
+                          makePublishOrUnpublish(item.id, item.published)
+                        " [disabled]="item.createdbyId != createdbyID">
+                        <i class="fas fa-eye mr-1"></i> Published
+                      </button>
+                      <!-- <button class="btn btn-event-action mr-3" (click)="makePublishOrUnpublish(item.id,item.published)">MAKE {{(item.published)?'UNPUBLISH':'PUBLISH'}}</button> -->
+                      <button *ngIf="!item._public" class="btn btn-event-action" (click)="
+                          makePublicOrPrivate(item.id, item._public, 'event')
+                        " [disabled]="item.createdbyId != createdbyID">
+                        <i class="fas fa-lock mr-1"></i> Private
+                      </button>
+                      <button *ngIf="item._public" class="btn btn-event-action" (click)="
+                          makePublicOrPrivate(item.id, item._public, 'event')
+                        " [disabled]="item.createdbyId != createdbyID">
+                        <i class="fas fa-lock-open mr-1"></i> Public
+                      </button>
+                      <span class="follow float-right">
+                        <span class="count">{{ item.followers }}</span>
+                        <span class="countlabel" (click)="openEventFollowers(item.id)">Followers</span>
+                      </span>
+                      <!-- <button class="btn btn-event-action" (click)="makePublicOrPrivate(item.id,item._public,'event')">MAKE {{(item._public)?'PRIVATE':'PUBLIC'}}</button> -->
+                      <p class="card-date group inner list-group-item-text mb-0">
+                        {{ item.fromDate | date: "dd MMMM y h:mm a" }} to {{ item.endDate | date: "dd MMMM y h:mm a" }}
+                      </p>
+                      <button class="btn btn-edit pr-3" (click)="editEvent(item.id, false)" *ngIf="
+                          item.createdbyId != createdbyID ||
+                          item.eventCancel == 1
+                        ">
+                        <i class="fas fa-eye"></i>
+                      </button>
+                      <button class="btn btn-edit pr-3" (click)="editEvent(item.id, true)" *ngIf="
+                          item.createdbyId == createdbyID &&
+                          item.eventCancel == 0
+                        ">
+                        <i class="fas fa-edit"></i>
+                      </button>
+                      <button class="btn btn-edit pr-3" (click)="
+                          deleteEvent(
+                            item.id,
+                            item.deleteOrCancelEvent ? true : false
+                          )
+                        " *ngIf="
+                          item.createdbyId == createdbyID && !item.eventCancel
+                        ">
+                        <i class="fas fa-trash-alt"></i>
+                      </button>
+
+                      <button class="btn btn-edit" (click)="chatJoin(item)">
+                        <i class="fas fa-comment-dots"></i>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </ng-template>
+          </ngb-tab>
+          <ngb-tab>
+            <ng-template ngbTabTitle>MY PURCHASES</ng-template>
+            <ng-template ngbTabContent>
+              <div class="card bg-light" *ngFor="let x of userTickets; let i = index">
+                <div class="container">
+                  <div class="row">
+                    <div class="col-md-12" style="margin-left:5px">
+                      <div class="invoice-title check" data-toggle="collapse" data-target="#collapseExample_i"
+                        aria-expanded="false" aria-controls="collapseExample">
+                        <strong style="color:green" class="float-right" *ngIf="x.isConfirm">Confirmed</strong>
+                        <strong style="color:red" class="float-right" *ngIf="!x.isConfirm">Cancelled</strong>
+                        <br />
+                        <h5 class="date">
+                          <span style="cursor: pointer"
+                            (click)="routeToEvents(x.events.id)">{{ x.events.name | uppercase }}</span>
+                          <span class="float-right">
+                            Booking ID {{ x.uniqueId }}</span><br />
+                        </h5>
+                        <span class="float-right">
+                          <strong> Booking Date</strong> {{ x.bookDate | date: "MMMM d, y" }}</span>
+                      </div>
+
+                      <hr />
+                    </div>
+                  </div>
+                  <div class="row collapse" id="collapseExample_i">
+                    <div class="card card-body">
+                      <div class="col-md-12">
+                        <div class="panel panel-default">
+                          <div class="panel-heading">
+                            <h5 class="panel-title date">Booking summary</h5>
+                            <a class="cancel float-right" (click)="cancelBooking(x)" *ngIf="x.isConfirm">Cancel
+                              Booking</a>
+                          </div>
+                          <div class="panel-body">
+                            <div class="table-responsive">
+                              <table class="table table-condensed">
+                                <thead>
+                                  <tr>
+                                    <td>Zone</td>
+                                    <td>Adult</td>
+                                    <td class="text-center">Child</td>
+                                    <td class="text-center">OKU</td>
+                                    <td class="text-center">Total Quantity</td>
+                                    <td class="text-right">Total Price</td>
+                                  </tr>
+                                </thead>
+                                <tbody>
+                                  <tr *ngFor="let y of x.ticketInfo">
+                                    <td>{{ y.zone }}</td>
+                                    <td>{{ y.adultValue }}</td>
+                                    <td class="text-center">
+                                      {{ y.childValue }}
+                                    </td>
+                                    <td class="text-center">
+                                      {{ y.OKUValue }}
+                                    </td>
+                                    <td class="text-center">
+                                      {{ y.totalBuyedTickets }}
+                                    </td>
+                                    <td class="text-right">
+                                      @MYR {{ y.price }}
+                                    </td>
+                                  </tr>
+                                  <tr>
+                                    <td class="thick-line"></td>
+                                    <td class="thick-line"></td>
+                                    <td class="thick-line"></td>
+                                    <td class="thick-line"></td>
+                                    <td class="thick-line text-center">
+                                      <strong>Sub Total</strong><br /><strong>Tax</strong><br /><strong>Total</strong>
+                                    </td>
+                                    <td class="thick-line text-right">
+                                      @MYR {{ x.totalPrice }}<br />12%<br />@MYR
+                                      {{
+                                        (12 / 100) * x.totalPrice + x.totalPrice
+                                      }}
+                                    </td>
+                                  </tr>
+                                </tbody>
+                              </table>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </ng-template>
+          </ngb-tab>
+        </ngb-tabset>
+      </div>
+      <div class="col-lg-4" id="calender">
+        <ngb-tabset type="pills">
+          <ngb-tab>
+            <ng-template ngbTabTitle>
+              <i class="fas fa-calendar-week"></i> Calender</ng-template>
+            <ng-template ngbTabContent>
+              <ngb-datepicker #dp [dayTemplate]="t" outsideDays="hidden"></ngb-datepicker>
+              <ng-template #t let-date let-focused="focused">
+                <span [class.has-task]="hasTask(date)">
+                  {{ date.day }}
+                </span>
+
+                <span class="dot-span">
+                  <i [ngClass]="
+                      hasPublicTask(date)
+                        ? 'fas fa-circle dot-public mr-2'
+                        : null
+                    " ngbTooltip="{{ hasPublicTask(date) ? date.name : '' }}" placement="top"></i>
+                  <i [ngClass]="
+                      hasPrivateTask(date)
+                        ? 'fas fa-circle dot-private mr-2'
+                        : null
+                    " ngbTooltip="{{ hasPrivateTask(date) ? date.name : '' }}" placement="top"></i>
+                  <i [ngClass]="
+                      hasBookingDate(date) ? 'fas fa-circle dot-booking' : null
+                    "></i>
+                </span>
+              </ng-template>
+              <div class="d-flex">
+                <span class="text-muted mr-4">
+                  <i class="fas fa-circle dot-public"></i> Public event
+                </span>
+                <span class="text-muted mr-4">
+                  <i class="fas fa-circle dot-private"></i> Private event</span>
+                <span class="text-muted">
+                  <i class="fas fa-circle dot-booking"></i> Booking Date</span>
+              </div>
+            </ng-template>
+          </ngb-tab>
+          <!-- <ngb-tab>
+            <ng-template ngbTabTitle>
+              <i class="fas fa-list"></i> List</ng-template>
+            <ng-template ngbTabContent>
+              <div class="row" id="event_list">
+
+                <div [ngClass]="{'list-group-item': list}" class="item col-xs-4 col-lg-4">
+                  <div class="thumbnail card">
+                    <div class="img-event">
+                      <img oncontextmenu="return false"  class="group list-group-image img-fluid" src="http://placehold.it/400x250/000/fff" alt="" />
+                    </div>
+                    <div class="caption card-body">
+                      <h6 class="group card-title inner list-group-item-heading">Product title</h6>
+                      <p class="card-date group inner list-group-item-text mb-0">Returns the textual representation of a
+                        day that is rendered in a day cell</p>
+                    </div>
+                  </div>
+                </div>
+
+              </div>
+
+            </ng-template>
+          </ngb-tab> -->
+        </ngb-tabset>
+      </div>
+    </div>
+  </div>
+</section>

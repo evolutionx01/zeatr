@@ -1,0 +1,19 @@
+@import '~src/assets/sass/variables';
+@import '~src/assets/sass/mixins';
+
+#StatePopup{
+    min-height: 70vh;
+
+
+}
+
+agm-map {
+    height: 300px;
+  }
+
+  .btn_confirm{
+    padding: 0.125rem .75rem;
+            border-radius: 20px;
+            @include btn_header(#f26633, #fff);
+}
+

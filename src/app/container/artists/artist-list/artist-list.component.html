@@ -1,0 +1,41 @@
+<section id="artist_list">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <h2 class="mb-4">ARTISTS</h2>
+            </div>
+        </div>
+        <div class="row">
+
+            <div *ngFor="let item of artistsData; let i = index" class="col-lg-3 col-md-6 col-sm-6  col-xs-12">
+                <div id="artists" class="card d-flex flex-row align-items-center">
+                    <div (click)="artistDetailPage(item.user.id)">
+                        <img oncontextmenu="return false" class="card-img-top p-1" src="{{item.user.profilePic}}" alt="Card image cap" onerror="this.src='../../../../assets/images/default.png';">
+                    </div>
+                    <div class="card-body" (click)="artistDetailPage(item.user.id)">
+                        <p class="card-title mb-0">{{item.user.firstName}}</p>
+                        <p class="card-text">{{item.category}} | {{item.subCategory}}</p>
+                    </div>
+                    <!-- <div *ngIf="!showFollow && user_id != item.user.id" class="col-md-4"> -->
+                    <span *ngIf="!showFollow && user_id != item.user.id" class="d-inline text-muted followToggle" (click)="login()"><i class="fas fa-heart unfollow"></i
+    ></span>
+                    <!-- </div> -->
+                    <!-- <div *ngIf="showFollow && user_id != item.user.id" class="col-md-4"> -->
+                    <span *ngIf="showFollow && user_id != item.user.id && !item.follow" class="d-inline text-muted followToggle" (click)="followArtist(item.user.id)"><i class="fas fa-heart unfollow"></i
+    ></span>
+                    <span *ngIf="showFollow && user_id != item.user.id && item.follow" class="d-inline text-muted followToggle" (click)="unfollowArtist(item.user.id)"><i class="fas fa-heart follow"></i
+    ></span>
+                    <!-- </div> -->
+                </div>
+            </div>
+
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="float-right">
+                    <ngb-pagination #pagination (pageChange)="onPageChange($event)" [collectionSize]="totalCount" [(page)]="page" [maxSize]="5" [rotate]="true" [ellipses]="false" [boundaryLinks]="true" [pageSize]="pageLimit"></ngb-pagination>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

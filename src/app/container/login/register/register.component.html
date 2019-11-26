@@ -1,0 +1,134 @@
+<div class="modal-header">
+  <h4 class="modal-title">REGISTER</h4>
+  <button type="button" class="close" aria-label="Close" (click)="activeModal.dismiss('Cross click')">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+<div class="modal-body pb-4">
+  <form [formGroup]="signup">
+
+    <div class="form-row py-4">
+      <div class="form-group col-md-12">
+        <label for="inputEmail4">Register as</label>
+        <div class="row">
+          <div class="col-md-4 col-12">
+            <div class="custom-control custom-radio custom-control-inline">
+              <input type="radio" formControlName="role" id="customRadioInline1" value="1" class="custom-control-input">
+              <label class="custom-control-label" for="customRadioInline1">Artist</label>
+            </div>
+          </div>
+          <div class="col-md-4 col-12">
+            <div class="custom-control custom-radio custom-control-inline">
+              <input type="radio" formControlName="role" id="customRadioInline2" value="3" class="custom-control-input">
+              <label class="custom-control-label" for="customRadioInline2">Other Services</label>
+            </div>
+          </div>
+          <div class="col-md-4 col-12">
+            <div class="custom-control custom-radio custom-control-inline">
+              <input type="radio" formControlName="role" id="customRadioInline3" value="7" class="custom-control-input">
+              <label class="custom-control-label" for="customRadioInline3">Fan</label>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-4 col-12">
+            <div class="custom-control custom-radio custom-control-inline">
+              <input type="radio" formControlName="role" id="customRadioInline4" value="2" class="custom-control-input">
+              <label class="custom-control-label" for="customRadioInline4">Venue Owner</label>
+            </div>
+          </div>
+          <div class="col-md-4 col-12">
+            <div class="custom-control custom-radio custom-control-inline">
+              <input type="radio" formControlName="role" id="customRadioInline5" value="6" class="custom-control-input">
+              <label class="custom-control-label" for="customRadioInline5">Event Organizer</label>
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <div class="form-row py-4">
+      <div class="form-group col-md-12">
+        <div class="custom-control custom-checkbox">
+          <input type="checkbox" formControlName="agreed" class="custom-control-input" id="customCheck1">
+          <label class="custom-control-label" for="customCheck1">I have read and agreed to the Terms of Use and Privacy
+            Policy</label>
+        </div>
+      </div>
+    </div>
+
+
+    <div class="form-row py-4">
+      <div class="form-group col-md-6">
+        <input type="text" formControlName="firstname" class="form-control" placeholder="First Name"
+          [ngStyle]="{'border-color': signup.controls['firstname'].hasError('required') && signup.controls['firstname'].touched ? 'red' : '#ced4da' }">
+        <small class="text-danger form-text"
+          *ngIf="signup.controls['firstname'].hasError('required') && signup.controls['firstname'].touched">
+          Name is required. </small>
+      </div>
+      <div class="form-group col-md-6">
+        <input type="text" formControlName="lastname" class="form-control" placeholder="Last Name"
+          [ngStyle]="{'border-color': signup.controls['lastname'].hasError('required') && signup.controls['lastname'].touched ? 'red' : '#ced4da' }">
+        <small class="text-danger form-text"
+          *ngIf="signup.controls['lastname'].hasError('required') && signup.controls['lastname'].touched">
+          Name is required. </small>
+      </div>
+      <div class="form-group col-md-6">
+        <input type="email" formControlName="email" class="form-control" placeholder="Email">
+        <small class="text-danger form-text"
+          *ngIf="signup.controls['email'].hasError('required') && signup.controls['email'].touched">
+          Email is required. </small>
+        <small class="text-danger form-text"
+          *ngIf="signup.controls['email'].hasError('pattern') && signup.controls['email'].touched">
+          Please enter a valid email. </small>
+      </div>
+      <div class="form-group col-md-6">
+        <input type="password" formControlName="password" class="form-control" placeholder="Password">
+        <small class="text-danger"
+          *ngIf="signup.controls['password'].hasError('required') && signup.controls['password'].touched">
+          Password is mandatory. </small>
+        <small class="text-danger"
+          *ngIf="signup.controls['password'].hasError('pattern') && signup.controls['password'].touched">
+          Password should be atleast 8 characters with a lowercase letter, a uppercase letter, a numbers and a special
+          character. </small>
+      </div>
+      <div class="form-group col-md-6">
+        <input type="password" formControlName="confirm_password" class="form-control" placeholder="Confirm Password">
+        <small class="text-danger"
+          *ngIf="signup.controls['confirm_password'].hasError('required') && signup.controls['confirm_password'].touched">Confirm
+          Password is mandatory</small>
+        <small class="text-danger"
+          *ngIf="signup.controls['confirm_password'].hasError('matchPassword') && signup.controls['confirm_password'].touched">Passwords
+          doesn't match</small>
+      </div>
+    </div>
+
+
+
+
+
+    <div class="form-group">
+      <button type="submit" class="btn btn-login btn-large btn-block"
+        [disabled]="signup.invalid || !signup.value.agreed" (click)="register()">REGISTER</button>
+    </div>
+
+  </form>
+  <div class="form-group">
+    <div class="divider_login text-center">
+      <p class="divider_content">OR</p>
+    </div>
+  </div>
+
+  <div class="form-group">
+    <button type="submit" class="btn btn-facebook btn-block" (click)="registerWithFB()"
+      [disabled]="!signup.value.agreed">REGISTER WITH FACEBOOK</button>
+  </div>
+
+  <div class="form-group">
+    <button type="submit" class="btn btn-google btn-block" (click)="registerWithGoogle()"
+      [disabled]="!signup.value.agreed">REGISTER WITH GOOGLE</button>
+  </div>
+
+</div>

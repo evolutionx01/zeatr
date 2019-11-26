@@ -1,0 +1,441 @@
+<section>
+  <!-- <div class="container"> -->
+  <form [formGroup]="basicForm">
+    <div class="container" id="createEvent">
+      <div class="row">
+        <div class="col-lg-12">
+          <h4 class="mb-4">Create Event</h4>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-lg-12">
+          <h6>Event Basic Details</h6>
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="col-md-6">
+          <div class="form-row">
+            <div class="form-group col-md-12">
+              <label>Event Name*</label>
+
+              <input type="text" formControlName="name" class="form-control" placeholder="Enter event name"
+                (blur)="createSlug()" />
+              <small class="text-danger form-text" *ngIf="
+                  basicForm.controls['name'].hasError('required') &&
+                  basicForm.controls['name'].touched
+                ">
+                Event Name is mandatory.
+              </small>
+              <!-- <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small> -->
+            </div>
+            <div class="form-group col-md-12">
+              <label>Event Short Name*</label>
+              <div *ngIf="showField">
+                <input type="text" formControlName="slug" class="form-control" placeholder="Enter event short name"
+                  (keyup.enter)="setTargetUrl()" (input)="checkSlug()" />
+                <small class="text-danger form-text" *ngIf="
+                    basicForm.controls['slug'].hasError('required') &&
+                    basicForm.controls['slug'].touched
+                  ">
+                  Event Short Name is mandatory. </small><small class="text-danger form-text" *ngIf="exists">
+                  Event Short Name is already exsits.
+                </small>
+                <small id="emailHelp" class="form-text text-muted">Please enter short name and press enter</small>
+              </div>
+              <div *ngIf="!showField">
+                <a href="{{ targetUrl }}" target="_blank">{{ basicForm.controls["slug"].value }}
+                </a>
+                <i class="fas fa-pencil-alt" (click)="showField = !showField" title="edit" *ngIf="edit"></i>
+              </div>
+            </div>
+            <div class="form-group col-md-12">
+              <label>Event Description*</label>
+              <ejs-richtexteditor formControlName="summary" placeholder="Enter event description"></ejs-richtexteditor>
+
+              <!-- <textarea type="text" formControlName='summary' class="form-control textarea" placeholder="Enter event description"></textarea> -->
+              <small class="text-danger form-text" *ngIf="
+                  basicForm.controls['summary'].hasError('required') &&
+                  basicForm.controls['summary'].touched
+                ">
+                Description is mandatory.
+              </small>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group col-md-6">
+              <div class="custom-control custom-checkbox">
+                <input formControlName="kidsSuitable" type="checkbox" class="custom-control-input" id="customCheck1"
+                  (change)="isKidsSutitable($event)" />
+                <label class="custom-control-label" for="customCheck1">Sutiable for kids</label>
+              </div>
+            </div>
+            <div class="form-group col-md-6">
+              <div class="custom-control custom-checkbox">
+                <input formControlName="hasTicket" type="checkbox" class="custom-control-input" id="customCheck2" />
+                <label class="custom-control-label" for="customCheck2">Events has tickets?</label>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group col-md-6">
+
+              <button class="btn btn-info btn-file" *ngIf="edit">
+                Upload e-pamphplet/brochure
+                <input type="file" (change)="changeFile($event)" />
+              </button>
+
+            </div>
+            <div class="form-group col-md-6">
+              <p *ngIf="file == null">{{ fileName }}</p>
+              <a *ngIf="file !== null" href="{{ file }}" target="blank">{{
+                    fileName
+                  }}</a>
+            </div>
+
+
+          </div>
+        </div>
+
+        <div class="col-md-6">
+          <figure>
+            <img oncontextmenu="return false" src="{{ this.image }}"
+              onerror="this.src='../../../../assets/images/default.png';" alt="The Pulpit Rock" width="245" />
+          </figure>
+          <button class="btn btn-primary btn-file" *ngIf="edit">
+            Change Image
+            <input type="file" (change)="changeListener($event)" />
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div *ngIf="this.basicForm.value.hasTicket" class="container" id="createTickets">
+      <i class="fa fa-question-circle float-right" aria-hidden="true" (click)="faqModal()">
+        FAQ</i>
+      <div class="row">
+        <div class="col-lg-12">
+          <h6>Ticket Details</h6>
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group  col-md-4">
+          <label>Total Tickets*</label>
+          <input type="number" formControlName="totalTickets" class="form-control"
+            placeholder="Enter number of tickets" />
+          <small class="text-danger form-text" *ngIf="
+              basicForm.controls['totalTickets'].hasError('required') &&
+              basicForm.controls['totalTickets'].touched
+            ">
+            Ticket is mandatory.
+          </small>
+        </div>
+        <div class="form-group  col-md-4">
+          <label>Total Online Tickets*</label>
+          <input type="number" formControlName="onlineTickets" class="form-control"
+            placeholder="Enter number online tickets" />
+          <!-- <small class="text-danger form-text"
+            *ngIf="basicForm.controls['onlineTickets'].hasError('required') && basicForm.controls['onlineTickets'].touched">
+            Online Ticket is mandatory. </small> -->
+          <small class="text-danger form-text" *ngIf="
+              basicForm.controls['onlineTickets'].hasError('matchTicket') &&
+              basicForm.controls['onlineTickets'].touched
+            ">
+            Online Ticket cannot be more than tickets.
+          </small>
+        </div>
+        <div class="col-md-4">
+          <button class="btn btn-add float-right" (click)="addTickets()" *ngIf="edit">
+            Create Ticket Zone
+          </button>
+        </div>
+      </div>
+
+      <div *ngIf="showZone" class="form-row">
+        <table class="table table-sm">
+          <thead>
+            <tr>
+              <th scope="col" class="col">
+                <p class="header">Has Online tickets?</p>
+              </th>
+              <th scope="col">Zone Name</th>
+              <th scope="col">Total Ticket</th>
+              <th scope="col">Online Ticket</th>
+              <th scope="col">Adult Price</th>
+              <th scope="col">OKU Price</th>
+              <th scope="col">child Price</th>
+              <th scope="col"></th>
+            </tr>
+          </thead>
+          <tbody>
+            <ng-container formArrayName="tickets" *ngFor="let item of formDataTicket.controls; let i = index">
+              <tr [formGroupName]="i">
+                <td class="col">
+                  <input type="checkbox" formControlName="zonewisecheckbox" />
+                </td>
+                <td>
+                  <input class="form-control" formControlName="zone" type="text" placeholder="Enter zone name*" />
+                  <small class="text-danger form-text" *ngIf="
+                      item.controls['zone'].hasError('required') &&
+                      item.controls['zone'].touched
+                    ">
+                    Zone is mandatory.
+                  </small>
+                </td>
+                <td>
+                  <input class="form-control" formControlName="total" type="number"
+                    placeholder="Enter total tickets*" />
+                  <small class="text-danger form-text" *ngIf="
+                      item.controls['total'].hasError('required') &&
+                      item.controls['total'].touched
+                    ">
+                    Total Ticket is mandatory.
+                  </small>
+                  <small class="text-danger form-text" *ngIf="
+                      item.controls['total'].hasError('matchZoneTotalTicket') &&
+                      item.controls['total'].touched
+                    ">
+                    Total Ticket cannot be more than Total tickets.
+                  </small>
+                </td>
+                <td>
+                  <input class="form-control" formControlName="online" type="number"
+                    placeholder="Enter online tickets*" />
+                  <small class="text-danger form-text" *ngIf="
+                      item.controls['online'].hasError('required') &&
+                      item.controls['online'].touched
+                    ">
+                    Online Ticket is mandatory.
+                  </small>
+                  <small class="text-danger form-text" *ngIf="
+                      item.controls['online'].hasError('matchZoneTicket') &&
+                      item.controls['online'].touched
+                    ">
+                    Online Ticket cannot be more than total ticket.
+                  </small>
+                  <small class="text-danger form-text" *ngIf="
+                      item.controls['online'].hasError(
+                        'matchZoneOnlineTicket'
+                      ) && item.controls['online'].touched
+                    ">
+                    Online Ticket cannot be more than Total Online tickets.
+                  </small>
+                </td>
+                <td>
+                  <input class="form-control" formControlName="priceAdult" type="text" placeholder="0.00*" />
+                  <small class="text-danger form-text" *ngIf="
+                      item.controls['priceAdult'].hasError('required') &&
+                      item.controls['priceAdult'].touched
+                    ">
+                    price is mandatory.
+                  </small>
+                </td>
+                <td>
+                  <input class="form-control" formControlName="priceOku" type="text" placeholder="0.00*" />
+                  <small class="text-danger form-text" *ngIf="
+                      item.controls['priceOku'].hasError('required') &&
+                      item.controls['priceOku'].touched
+                    ">
+                    price is mandatory.
+                  </small>
+                </td>
+                <td>
+                  <input class="form-control" formControlName="priceChild" type="text" placeholder="0.00"
+                    [readOnly]="!isSuitableForKids" />
+                  <small class="text-danger form-text" *ngIf="
+                      item.controls['priceChild'].hasError('required') &&
+                      item.controls['priceChild'].touched
+                    ">
+                    price is mandatory.
+                  </small>
+                </td>
+                <td>
+                  <button class="btn btn-add btn-absolute" (click)="deleteTicket(i)" title="delete" *ngIf="edit">
+                    <i class="fas fa-trash-alt" title="delete"></i>
+                  </button>
+                </td>
+              </tr>
+            </ng-container>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="container" id="createProgram">
+      <div class="row">
+        <div class="col-lg-6">
+          <h6>Program Details*</h6>
+        </div>
+        <div class="col-lg-6">
+          <button class="btn btn-add float-right" (click)="addProgram()" *ngIf="edit">
+            Add Program
+          </button>
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="addProgram col-md-12 mt-4" formArrayName="programs"
+          *ngFor="let item of formDataProgram.controls; let i = index">
+          <div [formGroupName]="i">
+            <button class="btn btn-add btn-absolute" (click)="deleteProgram(i)" *ngIf="formDataProgram.length > 1"
+              title="delete">
+              <i class="fas fa-trash-alt"></i>
+            </button>
+            <div class="form-row">
+              <div class="form-group col-md-6">
+                <label>Program Name*</label>
+                <input type="text" class="form-control" placeholder="Program Name" formControlName="name" />
+                <small class="text-danger form-text" *ngIf="
+                    item.controls['name'].hasError('required') &&
+                    item.controls['name'].touched
+                  ">
+                  Program Name is required.
+                </small>
+              </div>
+              <div class="form-group col-md-6">
+                <label>Venue*</label>
+                <button class="btn btn-add btn-sm" (click)="addVenue(i)" *ngIf="edit">
+                  Add Venue
+                </button>
+                <div class="d-flex flex-direction-row">
+                  <tag-input formControlName="venues" [validators]="tagValidators" theme="bootstrap"
+                    [placeholder]="'Click on Search to add venue'"
+                    [secondaryPlaceholder]="'Click on Search to add venue'" [onlyFromAutocomplete]="true"
+                    [disable]="!edit" (input)="getVenueSearchData($event)" id="venue">
+                    <tag-input-dropdown [showDropdownIfEmpty]="true" [dynamicUpdate]="false" [focusFirstElement]="true"
+                      [displayBy]="'display'" [identifyBy]="'value'" [autocompleteItems]="autocompleteVenueAsObjects">
+                      <ng-template let-item="item" let-index="index">
+                        {{ item.value }}
+                      </ng-template>
+                    </tag-input-dropdown>
+                  </tag-input>
+                  <button class="button" (click)="search('venues', i)" *ngIf="edit">
+                    <i class="fas fa-search"></i>
+                  </button>
+                </div>
+                <small class="text-danger form-text" *ngIf="
+                    item.controls['venues'].hasError('required') &&
+                    item.controls['venues'].touched
+                  ">
+                  Venue is required.
+                </small>
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group col-md-6">
+                <label>Artists*</label>
+                <div class="d-flex flex-direction-row">
+                  <tag-input formControlName="artists" [validators]="tagValidators" theme="bootstrap"
+                    [placeholder]="'Click on Search to add artist'"
+                    [secondaryPlaceholder]="'Click on Search to add artist'" [onlyFromAutocomplete]="true"
+                    [disable]="!edit" (input)="getArtistSearchData($event)">
+                    <tag-input-dropdown [showDropdownIfEmpty]="true" [dynamicUpdate]="false" [focusFirstElement]="true"
+                      [displayBy]="'display'" [identifyBy]="'value'" [autocompleteItems]="autocompleteArtistAsObjects">
+                      <ng-template let-item="item" let-index="index">
+                        {{ item.value }}
+                      </ng-template>
+                    </tag-input-dropdown>
+                  </tag-input>
+                  <button class="button" (click)="search('artists', i)" *ngIf="edit">
+                    <i class="fas fa-search"></i>
+                  </button>
+                </div>
+                <small class="text-danger form-text" *ngIf="
+                    item.controls['artists'].hasError('required') &&
+                    item.controls['artists'].touched
+                  ">
+                  Artists is required.
+                </small>
+              </div>
+              <div class="form-group col-md-6">
+                <label>Services</label>
+                <div class="d-flex flex-direction-row">
+                  <tag-input formControlName="services" [validators]="tagValidators" theme="bootstrap"
+                    [placeholder]="'Click on Search to add service'"
+                    [secondaryPlaceholder]="'Click on Search to add service'" [disable]="!edit"
+                    (input)="getServiceSearchData($event)">
+                    <tag-input-dropdown [showDropdownIfEmpty]="true" [dynamicUpdate]="false" [focusFirstElement]="true"
+                      [displayBy]="'display'" [identifyBy]="'value'" [autocompleteItems]="autocompleteServiceAsObjects">
+                      <ng-template let-item="item" let-index="index">
+                        {{ item.value }}
+                      </ng-template>
+                    </tag-input-dropdown>
+                  </tag-input>
+                  <button class="button" (click)="search('services', i)" *ngIf="edit">
+                    <i class="fas fa-search"></i>
+                  </button>
+                </div>
+                <small class="text-danger form-text" *ngIf="
+                    item.controls['services'].hasError('required') &&
+                    item.controls['services'].touched
+                  ">
+                  Services is required.
+                </small>
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group col-md-12">
+                <label>Schedule Start Date/Time and End Date/Time </label>
+                <input [owlDateTime]="dt1" [selectMode]="'range'" class="form-control" formControlName="dateTime"
+                  placeholder="Program Name" [owlDateTimeTrigger]="dt1" placeholder="Date Time" />
+                <owl-date-time #dt1></owl-date-time>
+                <small class="text-danger form-text" *ngIf="
+                    item.controls['dateTime'].hasError('required') &&
+                    item.controls['dateTime'].touched
+                  ">
+                  Date/Time is required.
+                </small>
+                <small class="text-danger form-text" *ngIf="
+                    item.controls['dateTime'].hasError('isValid') &&
+                    item.controls['dateTime'].touched
+                  ">
+                  Date must be a valid start date and end date.
+                </small>
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group col-md-12">
+                <label>Short Note</label>
+                <!-- <input type="text" class="form-control" placeholder="Short Note" formControlName="shortNote"> -->
+                <ejs-richtexteditor formControlName="shortNote" placeholder="Short Note"></ejs-richtexteditor>
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="form-group col-md-12">
+                <label>Long Note</label>
+                <!-- <input type="text" class="form-control" placeholder="Long Note" formControlName="longNote"> -->
+                <ejs-richtexteditor formControlName="longNote" placeholder="Long Note"></ejs-richtexteditor>
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="form-group col-md-12">
+                <label>Mc Note</label>
+                <ejs-richtexteditor formControlName="mcNote" placeholder="MC Note"></ejs-richtexteditor>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="container" id="update">
+      <div class="row">
+        <div class="col-lg-12 ">
+          <div class="float-right">
+            <button class="btn btn-add mr-4" [disabled]="basicForm.invalid || exists" (click)="create()" *ngIf="edit">
+              {{ createButton }}
+            </button>
+            <button class="btn btn-add" (click)="clear()">Cancel</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </form>
+</section>

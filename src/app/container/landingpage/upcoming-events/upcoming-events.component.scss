@@ -1,0 +1,68 @@
+@import '~src/assets/sass/variables';
+@import '~src/assets/sass/mixins';
+
+#upcoming_events{
+    padding: 5rem 0; 
+
+    .btn-load{
+        @include loadmore(#666666, #444)
+    }
+    .card{
+        margin-bottom: 2rem;
+        box-shadow: 0px 2px 10px #888;
+    }
+    #events{
+        .custom_25{
+            width: 25px !important;
+        }
+        .card-img-top{
+            cursor: pointer;
+            height: 200px;
+            object-fit: cover;
+        }
+
+        .card-body{
+           
+            padding: 0.25rem 0.25rem 0.75rem 0.25rem;
+            .btn-ticket{
+                font-size: 12px;
+                padding: 0.125rem .75rem;
+                border-radius: 20px;
+                @include btn_header(#f26633, #fff);
+            }
+            .card-title{
+                cursor: pointer;
+                display: inline-block;
+                width: 90%;
+                white-space: nowrap;
+                overflow: hidden !important;
+                text-overflow: ellipsis;
+            }
+            .card-text{
+                cursor: pointer;
+                font-size: .75rem;
+                color: #444;
+                height: 50px;
+                overflow: hidden;
+            }
+            .event_date{
+                cursor: pointer;
+                text-align: center;
+                border-right: 1px solid #ddd;
+                .e_month{
+                    font-size: 0.75rem;
+                    color: #f26633;
+                    font-weight: bold;
+
+                }
+                .e_date{
+                    font-size: 1.5rem;
+                }
+                .e_time{
+                    font-size: 0.85rem;
+                }
+            }
+        }
+       
+    }
+}

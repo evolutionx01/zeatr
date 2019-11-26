@@ -1,0 +1,22 @@
+@import '~src/assets/sass/variables';
+@import '~src/assets/sass/mixins';
+
+.btn-add{
+    padding: .25rem 1.5rem;
+    border-radius: 20px;
+    vertical-align: middle;
+    @include btn_header(#f26633, #fff);
+}
+.btn-file{
+    padding: 0.325rem 1.5rem;
+    border-radius: 20px;
+    @include input_file()
+}
+
+.textarea{
+    min-height: 100px;
+}
+
+agm-map {
+    height: 300px;
+  }

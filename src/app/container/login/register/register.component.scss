@@ -1,0 +1,38 @@
+@import '~src/assets/sass/variables';
+@import '~src/assets/sass/mixins';
+
+
+.btn-login{
+
+    @include btn_custom($primary, #fff)
+}
+
+.btn-facebook{
+   
+    @include btn_header($facebook, #fff)
+}
+
+.btn-google{
+   
+    @include btn_header($google, #fff)
+}
+
+.btn-forgot{
+    @include forgotpassword($secondary, $black)
+}
+
+.form-control{
+    border-radius: 0
+}
+
+.divider_login{
+    color: $secondary;
+    padding: 1rem;
+    .divider_content{
+        border: 1px solid $secondary;
+        border-radius: 50%;
+        display: inline;
+        padding: .25rem 
+    }
+}
+

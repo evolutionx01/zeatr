@@ -1,0 +1,243 @@
+@import '~src/assets/sass/variables';
+@import '~src/assets/sass/mixins';
+
+.artist_divider {
+  border-bottom: 1px solid #e2e2e2
+}
+
+#artist_details {
+  background: url('../../../../assets/images/background.png');
+  background-color: #e2e2e2;
+  background-repeat: no-repeat;
+  background-size: 100%;
+  padding: 6rem 0;
+  .follow{
+    color: #f26633;
+  }
+  .followToggle{
+    cursor: pointer;
+  }
+  .artist_box {
+    background: #fff;
+
+    .genre {
+      color: #f26633;
+    }
+
+    .artist-about {
+      font-size: .8125rem;
+    }
+
+    .artist_data {
+      padding-bottom: 3rem;
+    }
+
+    .artist_award {
+      padding: 3rem 0
+    }
+
+    .artist_gallery {
+      padding: 3rem 0;
+    }
+
+    #artists {
+      img {
+        width: 80px;
+        height: 80px;
+        border-radius: 50%;
+        object-fit: contain;
+      }
+
+      .card-body {
+        padding: 0.5rem;
+        width: 70%;
+      }
+    }
+
+  }
+
+  // .artist_primary_details{
+  //     background: #fff
+  // }
+}
+
+#artist_details_premium{
+  background: url('../../../../assets/images/background.png');
+  background-color: #555;
+  background-repeat: no-repeat;
+  background-size: 100%;
+  padding: 6rem 0;
+  .follow{
+    color: #f26633;
+  }
+  .card{
+    color: #000;
+  }
+  .followToggle{
+    cursor: pointer;
+  }
+  .artist_box {
+    background: #000;
+    .category{
+      color: #fff;
+    }
+    .artist_award{
+      color: #fff;
+    }
+
+    .artist_description{
+      h6{
+        color: white
+      }
+      p{
+        color: white
+      }
+      
+    }
+    .artist_title{
+      color: white;
+    }
+
+    .genre {
+      color: #f26633;
+    }
+
+    .artist-about {
+      font-size: .8125rem;
+    }
+
+    .artist_data {
+      padding-bottom: 3rem;
+    }
+
+    .artist_award {
+      padding: 3rem 0
+    }
+
+    .artist_gallery {
+      padding: 3rem 0;
+    }
+
+    #artists {
+      img {
+        width: 80px;
+        height: 80px;
+        border-radius: 50%;
+        object-fit: contain;
+      }
+
+      .card-body {
+        padding: 0.5rem;
+        width: 70%;
+      }
+    }
+
+  }
+
+}
+
+
+
+
+
+
+#event_details {
+  background: url('../../../../assets/images/details_background.png');
+
+  background-repeat: no-repeat;
+  background-size: 100%;
+
+  .event_content {
+    padding: 2.5rem 0;
+
+
+  }
+
+  .event_image {
+    img {
+      width: 540px;
+      height: 370px;
+      object-fit: cover;
+    }
+  }
+
+  #organizer {
+    .card {
+      padding: 0.5rem;
+      border-radius: 0;
+      border: none;
+
+      img {
+
+        height: 80px;
+        object-fit: contain;
+      }
+    }
+  }
+
+  .backButton {
+    color: #666666;
+    cursor: pointer;
+  }
+
+  #artists {
+
+    .card {
+      padding: 0.5rem;
+      border-radius: 0;
+      border: none;
+      border-right: 1px solid #e2e2e2;
+
+      img {
+        width: 80px;
+        height: 80px;
+        border-radius: 50%;
+      }
+
+      .card-body {
+        padding: 0.5rem;
+        width: 70%;
+
+        .btn-ticket {
+          font-size: 12px;
+          padding: 0.125rem .75rem;
+          border-radius: 20px;
+          @include btn_header(#f26633, #fff);
+        }
+
+        .card-title {
+          font-size: 0.8125rem;
+          font-weight: bold;
+          color: #444;
+        }
+
+        .card-text {
+          font-size: .75rem;
+          color: #444;
+        }
+      }
+    }
+
+  }
+
+  .btn-tickets {
+    padding: .375rem 1.5rem;
+    border-radius: 20px;
+    vertical-align: middle;
+    @include btn_header(#f26633, #fff);
+  }
+
+}
+
+#events_program {
+  background: url('../../../../assets/images/background.png');
+  background-size: 20%;
+  background-position: bottom right;
+  background-repeat: no-repeat;
+
+  .events_program_details {
+    font-size: .875rem;
+    padding: 2.5rem 0;
+    border-bottom: 1px solid #e2e2e2;
+  }
+}

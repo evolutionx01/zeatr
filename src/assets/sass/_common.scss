@@ -1,0 +1,403 @@
+@import "~ng-pick-datetime/assets/style/picker.min.css";
+@import '~@swimlane/ngx-datatable/release/index.css';
+@import '~@swimlane/ngx-datatable/release/themes/material.css';
+@import '~@swimlane/ngx-datatable/release/assets/icons.css';
+@import '~src/assets/sass/variables';
+@import '~src/assets/sass/mixins';
+@import '~@ngx-share/button/themes/default/default-theme';
+body {
+    background-color: #f6f6f6 !important;
+}
+
+.box-shadow {
+    box-shadow: 0 .25rem .75rem rgba(0, 0, 0, .05);
+}
+
+.overlay {
+    position: fixed !important;
+}
+
+.divider {
+    border-bottom: 1px solid #ffffff
+}
+
+.divider-buyticket {
+    border-bottom: 1px solid #dee2e6
+}
+
+.ng-autocomplete {
+    width: 100% !important;
+}
+
+.btn {
+    &:focus {
+        box-shadow: none;
+    }
+}
+
+.modal-header {
+    padding: 2rem;
+    border-bottom: none;
+    .modal-title {
+        padding-bottom: 0.5rem;
+        padding-right: 2rem;
+        border-bottom: 4px solid $primary;
+    }
+}
+
+.modal-body {
+    padding: 0 2rem;
+}
+
+.modal-footer {
+    padding: 2rem;
+    border-top: none;
+}
+
+.autocomplete-container {
+    height: 45px !important;
+    box-shadow: none !important;
+    .input-container input {
+        height: 45px !important;
+    }
+    .suggestions-container {
+        z-index: 1;
+    }
+}
+
+#detailedArtist {
+    ngb-tabset {
+        ul {
+            padding: 0 0 1rem 0;
+            border-bottom: 1px solid $secondary;
+            li {
+                .nav-link {
+                    border-radius: 20px !important;
+                    border: 1px solid $secondary;
+                    background: white;
+                    color: $black;
+                    font-weight: bold;
+                    padding: 0.5rem 1.5rem;
+                    font-size: 0.8125rem;
+                    margin-right: 1rem;
+                }
+                .nav-link.active {
+                    border-radius: 20px;
+                    background-color: #fec214 !important;
+                    border-radius: 20px;
+                    color: $black !important;
+                    font-weight: bold;
+                    border: 1px solid #fec214;
+                }
+            }
+        }
+        .tab-pane {
+            padding: 1rem 0;
+        }
+    }
+}
+
+#buyTicketDetails {
+    ngb-tabset {
+        ul {
+            padding: 0 0 1rem 0;
+            li {
+                .nav-link {
+                    border-radius: 20px !important;
+                    border: 1px solid $secondary;
+                    background: white;
+                    color: $black;
+                    font-weight: bold;
+                    padding: 0.5rem 1.5rem;
+                    font-size: 0.8125rem;
+                    margin-right: 1rem;
+                }
+                .nav-link.active {
+                    border-radius: 20px;
+                    background-color: #fec214 !important;
+                    border-radius: 20px;
+                    color: $black !important;
+                    font-weight: bold;
+                    border: 1px solid #fec214;
+                }
+            }
+        }
+        .tab-pane {
+            padding: 1rem 0;
+        }
+    }
+    .table td,
+    .table th {
+        border-top: none;
+    }
+}
+
+#artistDetails {
+    ngb-tabset {
+        ul {
+            padding: 1rem 0;
+            border-bottom: none;
+            li {
+                .nav-link {
+                    padding: 0;
+                    background-color: transparent !important;
+                    border: none;
+                    padding-right: 1rem;
+                    border-right: 1px solid black;
+                    border-radius: 0 !important;
+                }
+                .nav-link.active {
+                    padding: 0;
+                    background-color: transparent !important;
+                    border: none;
+                    padding-right: 1rem;
+                    border-right: 1px solid black;
+                    border-radius: 0 !important;
+                    text-decoration: underline
+                }
+            }
+        }
+        .tab-pane {
+            padding: 1rem 0;
+        }
+    }
+}
+
+#artist_detail_gallery {
+    ngb-tabset {
+        ul {
+            padding: 1rem 0;
+            border-bottom: none;
+            li {
+                .nav-link {
+                    padding: 0 2rem 0rem 1rem;
+                    background-color: transparent !important;
+                    border: none;
+                    color: #999999;
+                    font-weight: bold;
+                    text-decoration: underline;
+                    border-radius: 0 !important;
+                }
+                .nav-link.active {
+                    padding: 0 2rem 0rem 1rem;
+                    background-color: transparent !important;
+                    border: none;
+                    color: #f26633;
+                    font-weight: bold;
+                    border-radius: 0 !important;
+                    text-decoration: none
+                }
+            }
+        }
+        .tab-pane {
+            padding: 1rem 0;
+        }
+    }
+}
+
+#calender {
+    ngb-tabset {
+        ul {
+            padding: 0 0 1rem 0;
+            border-bottom: 1px solid $secondary;
+            li {
+                .nav-link {
+                    border-radius: 20px !important;
+                    border: none;
+                    background: transparent;
+                    color: #666666;
+                    font-weight: bold;
+                    padding: 0.5rem 1.5rem;
+                    font-size: 0.8125rem;
+                    margin-right: 1rem;
+                }
+                .nav-link.active {
+                    border-radius: 20px;
+                    background-color: transparent;
+                    border-radius: 20px;
+                    color: $black !important;
+                    font-weight: bold;
+                    border: none;
+                }
+            }
+        }
+        .tab-pane {
+            padding: 1rem 0;
+        }
+    }
+}
+
+tag-input {
+    width: 100%;
+}
+
+.ng2-tag-input {
+    border: 1px solid #ced4da !important;
+    background: white;
+    padding: 0 !important;
+    min-height: 38px !important;
+    .ng2-tags-container {
+        input {
+            background: transparent;
+        }
+        tag {
+            background: #fec214 !important;
+            color: $black !important;
+        }
+        tag-input-form {
+            input {
+                height: 36px !important;
+                font-size: .8125rem !important;
+                padding: .375rem .75rem;
+            }
+        }
+    }
+}
+
+.progress {
+    background: white;
+}
+
+.btn {
+    font-size: .8125rem;
+}
+
+#calender {
+    ngb-datepicker {
+        border: none;
+        width: 100%;
+        .ngb-dp-month {
+            width: 100%;
+        }
+        .ngb-dp-weekdays {
+            justify-content: space-around;
+        }
+        .ngb-dp-week {
+            justify-content: space-around;
+        }
+    }
+}
+
+.carousel-control-next,
+.carousel-control-prev {
+    width: 5% !important;
+    // background-color: #999999;
+}
+
+.carousel-control-next {
+    right: -50px !important;
+}
+
+.carousel-control-prev {
+    left: -50px !important;
+}
+
+.artist_box {
+    .owl-nav {
+        position: absolute;
+        top: -52px;
+        right: 14px;
+    }
+}
+
+.form-group {
+    label {
+        margin-bottom: 0;
+        color: #999999;
+        font-size: 0.85rem;
+    }
+    .form-control {
+        border-radius: 0;
+        font-size: .8125rem;
+        height: calc(1.5em + .75rem + 6px);
+        &:focus {
+            box-shadow: none;
+        }
+    }
+    .input-group-append .btn,
+    .input-group-prepend .btn {
+        padding: .25rem .75rem;
+        background: #ffffff;
+        border: 1px solid #ced4da;
+        border-radius: 0;
+    }
+}
+
+table {
+    .form-control {
+        border-radius: 0;
+        font-size: .8125rem;
+        height: calc(1.5em + .75rem + 6px);
+        &:focus {
+            box-shadow: none;
+        }
+    }
+}
+
+.switch {
+    width: 28px !important;
+    height: 16px !important;
+    // margin-bottom: 2px !important;
+    small {
+        width: 15px !important;
+        height: 15px !important;
+    }
+    .switch-text {
+        position: relative !important;
+        top: 25px !important;
+    }
+    .on {
+        color: #f26633 !important
+    }
+    .off {
+        color: grey !important;
+        right: -35px !important;
+    }
+}
+
+.sb-wrapper {
+    min-width: 1rem !important;
+    font-size: 10px !important;
+}
+
+.ngb-dp-day {
+    cursor: pointer;
+    text-align: center;
+}
+
+#calender ngb-datepicker .ngb-dp-week {
+    min-height: 60px !important;
+    padding-top: 10px;
+}
+
+button {
+    cursor: pointer !important;
+}
+
+.ng-select.ng-select-single .ng-select-container {
+    height: auto !important;
+}
+
+#detailedArtist ngb-tabset ul>li {
+    margin-bottom: 10px;
+}
+
+.pac-container {
+    z-index: 100000;
+}
+
+.e-source-code {
+    display: none !important;
+}
+
+.popover-body {
+    padding: .5rem .75rem !important;
+    min-width: 270px !important;
+    background-color: #4e555c;
+    opacity: 1.7;
+    color: white !important;
+}
+
+.fixed-top {
+    z-index: 1000 !important
+}

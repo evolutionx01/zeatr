@@ -1,0 +1,134 @@
+<section id="event_details">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-6 event_content">
+        <div class="backbutton">
+          <span class="backButton" routerLink="{{ source }}">
+            <i class="fas fa-chevron-circle-left"></i> back</span>
+        </div>
+        <div class="event_title">
+          <h4 class="pt-4 font-weight-bold">{{ eventName }}
+          </h4>
+        </div>
+        <div *ngIf="(user_ID == '' || user_ID == null || user_ID == undefined)" class="col-md-4 float-right">
+
+          <span class="d-inline text-muted followToggle float-right" (click)="login()">
+            <i class="fas fa-heart unfollow"></i>
+            Follow</span>
+        </div>
+        <div *ngIf="(user_ID !== '' && user_ID !== null && user_ID !== undefined)" class="col-md-4 float-right">
+          <span *ngIf="!follow" class="d-inline text-muted followToggle float-right" (click)="followEvent()"><i
+              class="fas fa-heart unfollow"></i> Follow</span>
+          <span *ngIf="follow" class="d-inline text-muted followToggle float-right" (click)="unfollowEvent()"><i
+              class="fas fa-heart follow"></i> Following</span>
+        </div>
+        <div class="event_date">
+          <h6 class="py-2 font-weight-bold">
+            {{ startdate | date: "MMMM dd, y h:mm a" }} -
+            {{ enddate | date: "MMMM dd, y h:mm a" }}
+          </h6>
+        </div>
+        <div class="row mx-0 pb-4">
+          <div class="col-lg-6 px-0" *ngIf="!isOtherEvent">
+            <div id="artists">
+              <div class="card d-flex flex-row align-items-center">
+                <div>
+                  <img oncontextmenu="return false" class=" card-img-top p-1 " src="{{ organiserImg }}"
+                    alt="Card image cap " />
+                </div>
+                <div class="card-body ">
+                  <p class="card-title mb-0 ">{{ organiserName }}</p>
+                  <p class="card-text ">{{ profession }}</p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- <div class="col-lg-6 px-0 ">
+            <div id="organizer">
+              <div class="card d-flex flex-row align-items-center">
+                <div>
+                  <img oncontextmenu="return false" class="card-img-top p-1 " src="../../../../assets/images/logo.png "
+                    alt="Card image cap " />
+                </div>
+              </div>
+            </div>
+          </div> -->
+        </div>
+        <div class="event_tickets ">
+          <!-- <button class="btn btn-tickets" (click)="buyTickets()" >BUY TICKETS</button> -->
+          <button class="btn btn-tickets" (click)="buyTickets()"
+            *ngIf="availableTickets !== 0 && iscancelled == 0 && hasTickets" (click)="buyTickets()">
+            BUY TICKETS
+          </button>
+          <button class="btn btn-tickets" *ngIf="availableTickets == 0 && iscancelled == 0 && hasTickets"
+            style="cursor:text">
+            Sold Out
+          </button>
+          <button class="btn btn-tickets" *ngIf="iscancelled == 1" style="cursor:text">
+            Cancelled
+          </button>
+          <!-- <fb-share href="{{shareUrl}}"></fb-share> -->
+        </div>
+      </div>
+
+      <div class="col-lg-6 event_image">
+        <img oncontextmenu="return false" src="{{ eventImg }}"
+          onerror="this.src='../../../../assets/images/default.png';" class="img-fluid " />
+
+          
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="events_program">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8">
+        <div class="row events_program_details">
+          <div class="col-lg-12">
+            <h6 class="font-weight-bold">Description</h6>
+            <p class="mb-0" [innerHTML]="programDetails" style="word-wrap: break-word;text-align:justify"></p>
+          </div>
+        </div>
+
+        <div class="row events_program_details" *ngIf="participatingartists.length > 0">
+          <div class="col-lg-12">
+            <h6 class="font-weight-bold">PARTICIPATING ARTISTS</h6>
+            <span class="mb-0" *ngFor="let item of participatingartists">
+              <span class="highlight" (click)="routeToProfile(item.id)">{{ item.value }}</span>,</span>
+          </div>
+        </div>
+
+        <div class="row events_program_details">
+          <div class="col-lg-12">
+            <h6 class="font-weight-bold">VENUES DETAILS</h6>
+            <span class="mb-0" *ngFor="let item of venuedetails">
+              {{ item.value }},</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-lg-4">
+        <div class="events_program_details">
+          <h6 class="font-weight-bold">Share</h6>
+          <p>Share this event with your friends</p>
+          <fb-share href="{{ shareUrl }}">
+            <!-- <i class="fab fa-facebook-f mr-4"></i> <span
+              class="mr-4">|</span>Share -->
+          </fb-share>
+
+        </div>
+        <share-buttons [include]="['twitter', 'email', 'whatsapp']" [url]="repoUrl"></share-buttons>
+      </div>
+
+    </div>
+    <div class="row">
+      <div class="col-md-6">
+        <bar-rating [(rate)]="rate" (rateChange)="onRateChanges($event)" [max]="5" [theme]="'stars'"></bar-rating>
+        <span (click)="addReview()">Write Review</span>
+      </div>
+
+    </div>
+  </div>
+</section>

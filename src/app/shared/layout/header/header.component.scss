@@ -1,0 +1,17 @@
+@import '~src/assets/sass/variables';
+@import '~src/assets/sass/mixins';
+header {
+    .navbar {
+        box-shadow: 0 10px 15px rgba(0, 0, 0, 0.15);
+        .btn-header {
+            padding: .375rem 1.5rem;
+            border-radius: 20px;
+            vertical-align: middle;
+            @include btn_header(#f26633, #fff);
+        }
+        .btn-admin {
+            cursor: pointer;
+            font-size: 12px;
+        }
+    }
+}

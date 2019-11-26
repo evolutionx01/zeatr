@@ -1,0 +1,16 @@
+@import '~src/assets/sass/variables';
+@import '~src/assets/sass/mixins';
+
+.effect{
+    color : #f26633;
+    font-weight: bold;
+}
+
+.card{
+    margin-bottom: 10px;
+}
+
+#buyTicketDetails{
+    height: 400px;
+    overflow: scroll;
+}

@@ -1,0 +1,168 @@
+<section id="event_list">
+    <div class="container">
+        <div class="row">
+            <div class="col-4">
+                <h2 class="mb-4">EVENTS</h2>
+
+            </div>
+            <!-- <div class="row"> -->
+            <!-- </div> -->
+            <div class="col-6">
+                <div class="dateRange">
+                    <form [formGroup]="dateRangeForm">
+                        <div class="form-row">
+
+                            <div class="form-group col-md-5">
+                                <label>From Date</label>
+                                <div class="input-group">
+                                    <input class="form-control" placeholder="From Date" name="dp" formControlName="startDate" ngbDatepicker #d="ngbDatepicker">
+                                    <div class="input-group-append">
+                                        <button class="btn calendar" (click)="d.toggle()">
+                      <i class="fas fa-calendar-alt"></i>
+                    </button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group col-md-5">
+                                <label>To Date</label>
+                                <div class="input-group">
+                                    <input class="form-control" placeholder="To Date" name="dp" formControlName="endDate" ngbDatepicker #d1="ngbDatepicker" [minDate]="endDateObj">
+                                    <div class="input-group-append">
+                                        <button class="btn calendar" (click)="d1.toggle()">
+                      <i class="fas fa-calendar-alt"></i>
+                    </button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group col-md-2">
+                                <label></label>
+                                <div class="input-group">
+                                    <button class="btn btn-primary" (click)="searchEvents()" [disabled]="dateRangeForm.invalid">Search</button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+
+                </div>
+            </div>
+            <div class="col-2">
+
+                <div class="btn-group float-right" role="group" aria-label="Basic example">
+                    <button class="btn btn-secondary" (click)="onViewChangeList()">
+            <i class="fas fa-list"></i> List
+          </button>
+                    <button class="btn btn-secondary" (click)="onViewChangeGrid()">
+            <i class="fas fa-th"></i> Grid
+          </button>
+                </div>
+
+
+            </div>
+        </div>
+
+
+        <div class="row">
+
+            <!-- <div *ngFor="let item of upcomingEventsData; let i = index" class="col-lg-3 col-md-6 col-sm-6  col-xs-12">
+        <div id="events" class="card">
+          <img (click)="eventDetailsPage(item.id)" class="card-img-top p-1" src="{{item.picture}}" alt="Card image cap" width="253">
+          <div class="card-body">
+            <div class="row">
+              <div class="col-md-4 pr-2 event_date">
+                <p class="e_month m-0">MAR - JAN</p>
+                <p class="e_date m-0">18-08</p>
+                <p class="e_time m-0">12:00 AM</p>
+              </div>
+              <div class="col-md-8  pl-2 event_details">
+                <h6 class="card-title " (click)="eventDetailsPage(item.id)">{{item.name}}</h6>
+                <p class="card-text">Some quick example text to build on...</p>
+                <button class="btn btn-ticket -hollow">BUY TICKET</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div> -->
+
+            <div *ngFor="let item of upcomingEventsData; let i = index" [ngClass]="{'col-lg-6 col-md-12 col-sm-12  col-xs-12': list,  'col-lg-3 col-md-6 col-sm-6  col-xs-12': grid}" class="item">
+                <div class="thumbnail card" id="events" [ngClass]="{'d-flex flex-row': list}">
+                    <div class="img-event" (click)="eventDetailsPage(item.id)">
+                        <img oncontextmenu="return false" class="card-img-top p-1" src="{{item.picture}}" onerror="this.src='../../../../assets/images/default.png';">
+                    </div>
+                    <div id="gridView" *ngIf="!list" class="caption card-body">
+                        <div class="row">
+                            <div class="col-md-4 pr-2 event_date" (click)="eventDetailsPage(item.id)">
+                                <p class="e_month m-0">{{item.fromDate | date: 'MMMM'}}</p>
+                                <p class="e_date m-0">{{item.fromDate | date: 'dd-MM'}}</p>
+                                <p class="e_time m-0">{{item.fromDate | date: 'hh:mm a'}}</p>
+                            </div>
+                            <div class="col-md-8  pl-2 event_details">
+                                <h6 class="card-title " (click)="eventDetailsPage(item.id)">{{item.name}}</h6>
+                                <p class="card-text" (click)="eventDetailsPage(item.id)" [innerHTML]="item.summary"></p>
+                                <!-- <button class="btn btn-ticket -hollow" (click)="buyTickets(item)" >BUY TICKET</button> -->
+                                <img *ngIf="item.eventSource == 'ZEATR'" src="../../../../assets/images/event_logo.png" width="25" class="img-fluid float-right d-inline" />
+                                <button class="btn btn-ticket -hollow" *ngIf="item.availableTickets !== 0 && item.eventCancel == 0 && item.hasTickets" (click)="buyTickets(item)">BUY TICKET</button>
+                                <button class="btn btn-ticket -hollow" *ngIf="item.availableTickets == 0 && item.eventCancel == 0 && item.hasTickets" style="cursor:text">SOLD OUT</button>
+                                <button class="btn btn-ticket -hollow" *ngIf="item.eventCancel == 1" style="cursor:text">Cancelled</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="listView" *ngIf="list" class="caption card-body">
+                        <div class="row">
+                            <div class="col-md-12 event_details">
+                                <h6 class="card-title " (click)="eventDetailsPage(item.id)">{{item.name}}</h6>
+                                <p class="card-text" [innerHTML]="item.summary" (click)="eventDetailsPage(item.id)"></p>
+                                <p class="card-date" (click)="eventDetailsPage(item.id)"> {{item.fromDate | date: 'MMMM dd, y hh:mm a'}} - {{item.endDate | date: 'MMMM dd, y hh:mm a'}}</p>
+                                <!-- <button class="btn btn-ticket -hollow" (click)="buyTickets(item)">BUY TICKET</button> -->
+                                <img *ngIf="item.eventSource == 'ZEATR'" src="../../../../assets/images/event_logo.png" width="25" class="img-fluid float-right d-inline" />
+                                <button class="btn btn-ticket -hollow" *ngIf="item.availableTickets !== 0 && !item.eventCancel && item.hasTickets" (click)="buyTickets(item)">BUY TICKET</button>
+                                <button class="btn btn-ticket -hollow" *ngIf="item.availableTickets == 0 && !item.eventCancel && item.hasTickets" style="cursor:text">SOLD OUT</button>
+                                <button class="btn btn-ticket -hollow" *ngIf="item.eventCancel" style="cursor:text">Cancelled</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <!-- <div [ngClass]="{'col-lg-6 col-md-12 col-sm-12  col-xs-12': list,  'col-lg-3 col-md-6 col-sm-6  col-xs-12': grid}" class="item">
+        <div class="thumbnail card" id="events" [ngClass]="{'d-flex flex-row': list}">
+          <div class="img-event">
+            <img class="card-img-top p-1" src="../../../../assets/images/event1.png">
+          </div>
+          <div class="caption card-body">
+            <div *ngIf="!list" class="row">
+              <div class="col-md-4 pr-2 event_date">
+                <p class="e_month m-0">MAR - JAN</p>
+                <p class="e_date m-0">18-08</p>
+                <p class="e_time m-0">12:00 AM</p>
+              </div>
+              <div class="col-md-8  pl-2 event_details">
+                <h6 class="card-title ">Fun Event</h6>
+                <p class="card-text">Some quick example text to build on...</p>
+                <button class="btn btn-ticket -hollow">BUY TICKET</button>
+              </div>
+            </div>
+
+            <div *ngIf="list" class="row">
+              <div class="col-md-12 event_details">
+                <h6 class="card-title ">Fun Event</h6>
+                <p class="card-text">Some quick example text to build on...</p>
+                <p class="card-date"> 23 Mar 2019 - 24 Mar 2019 12:00 AM</p>
+                <button class="btn btn-ticket -hollow">BUY TICKET</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div> -->
+
+        </div>
+
+        <div class="row">
+            <div class="col-md-12">
+                <div class="float-right">
+                    <ngb-pagination #eventPagination (pageChange)="onPageChange($event)" [collectionSize]="totalCount" [(page)]="page" [maxSize]="5" [rotate]="true" [ellipses]="false" [boundaryLinks]="true" [pageSize]="pageLimit"></ngb-pagination>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

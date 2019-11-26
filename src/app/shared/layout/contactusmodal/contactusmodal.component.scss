@@ -1,0 +1,8 @@
+@import '~src/assets/sass/variables';
+@import '~src/assets/sass/mixins';
+.btn-header {
+    padding: .375rem 1.5rem;
+    border-radius: 20px;
+    vertical-align: middle;
+    @include btn_header(#f26633, #fff);
+}

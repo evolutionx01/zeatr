@@ -1,0 +1,47 @@
+@import '~src/assets/sass/variables';
+@import '~src/assets/sass/mixins';
+.sidenav {
+    height: 100%;
+    width: 250px;
+    position: fixed;
+    left: 0;
+    padding-top: 20px;
+    background-color: white;
+    color: black;
+    padding: 25px 25px 25px 25px;
+  }
+  
+  .sidenav a {
+    // padding: 6px 8px 6px 16px;
+    text-decoration: none;
+    font-size: 16px;
+    // color: #818181;
+    display: block;
+    margin-bottom: 15px;
+  }
+  
+  .sidenav a:hover {
+    color: #f26633;
+  }
+  
+  .main {
+    margin-left: 250px; /* Same as the width of the sidenav */
+    font-size: 28px; /* Increased text to enable scrolling */
+    padding: 0px 10px;
+  }
+  .btn-account{
+    padding: 0.25rem .75rem;
+    font-size: 0.75rem;
+    border-radius: 20px;
+    vertical-align: middle;
+    @include btn_header(#f26633, #fff);
+   }
+  
+//   @media screen and (max-height: 450px) {
+//     .sidenav {padding-top: 15px;}
+//     .sidenav a {font-size: 18px;}
+//   }
+
+.container{
+  margin-left: 220px !important;
+}

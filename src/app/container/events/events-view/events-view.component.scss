@@ -1,0 +1,118 @@
+@import '~src/assets/sass/variables';
+@import '~src/assets/sass/mixins';
+
+
+#event_details {
+    background: url('../../../../assets/images/details_background.png');
+    background-repeat: no-repeat;
+    background-size: 100%;
+    .event_content {
+        padding: 2.5rem 0;
+    }
+    .event_image {
+        img {
+            width: 540px;
+            height: 370px;
+            object-fit: cover;
+        }
+    }
+    #organizer {
+        .card {
+            padding: 0.5rem;
+            border-radius: 0;
+            border: none;
+            img {
+                height: 80px;
+                object-fit: contain;
+            }
+        }
+    }
+    .backButton {
+        color: #666666;
+        cursor: pointer;
+    }
+    #artists {
+        .card {
+            padding: 0.5rem;
+            border-radius: 0;
+            border: none;
+            border-right: 1px solid #e2e2e2;
+            img {
+                width: 80px;
+                height: 80px;
+                border-radius: 50%;
+            }
+            .card-body {
+                padding: 0.5rem;
+                width: 70%;
+                .btn-ticket {
+                    font-size: 12px;
+                    padding: 0.125rem .75rem;
+                    border-radius: 20px;
+                    @include btn_header(#f26633,
+                    #fff);
+                }
+                .card-title {
+                    font-size: 0.8125rem;
+                    font-weight: bold;
+                    color: #444;
+                }
+                .card-text {
+                    font-size: .75rem;
+                    color: #444;
+                }
+            }
+        }
+    }
+    .btn-tickets {
+        padding: .375rem 1.5rem;
+        border-radius: 20px;
+        vertical-align: middle;
+        @include btn_header(#f26633,
+        #fff);
+    }
+}
+
+#events_program {
+    background: url('../../../../assets/images/background.png');
+    background-size: 20%;
+    background-position: bottom right;
+    background-repeat: no-repeat;
+    .events_program_details {
+        font-size: .875rem;
+        padding: 2.5rem 0;
+        border-bottom: 1px solid #e2e2e2;
+    }
+}
+
+.btn-share {
+    padding: .375rem 1.5rem;
+    border-radius: 20px;
+    vertical-align: middle;
+    @include btn_header(#3ab0ff,
+    #fff);
+}
+
+.btn-facebook-share {
+    padding: .375rem 1.5rem;
+    border-radius: 0px;
+    vertical-align: middle;
+    @include btn_header(#3b5998,
+    #fff);
+}
+
+.follow {
+    color: #f26633;
+}
+
+.followToggle {
+    cursor: pointer;
+}
+
+.highlight {
+    cursor: pointer;
+}
+
+.highlight:hover {
+    color: #f26633
+}

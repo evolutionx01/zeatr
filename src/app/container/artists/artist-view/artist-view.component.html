@@ -1,0 +1,433 @@
+<section *ngIf="showPremium == 'Basic'" id="artist_details">
+    <div class="container">
+        <div class="backbutton">
+            <span class="backButton" routerLink="{{ source }}">
+        <i class="fas fa-chevron-circle-left"></i> back</span
+      >
+    </div>
+    <div class="float-right">
+      <share-buttons
+        [include]="['twitter', 'facebook', 'email', 'whatsapp']"
+        [url]="repoUrl"
+        [title]="mailSubject"
+      ></share-buttons>
+    </div>
+    <div class="artist_box">
+      <div class="row artist_data">
+        <div class="col-lg-4">
+          <img
+            oncontextmenu="return false"
+            class="img-fluid"
+            src="{{ profilePic }}"
+            onerror="this.src='../../../../assets/images/default.png';"
+          />
+        </div>
+        <div class="col-lg-8">
+          <div class="row mt-4">
+            <div class="col-md-8">
+              <h4>{{ artistName }}..</h4>
+            </div>
+            <div *ngIf="!showFollow && user_id != artist_id" class="col-md-4">
+              <span class="d-inline text-muted followToggle" (click)="login()"
+                ><i class="fas fa-heart unfollow"></i> Follow</span
+              >
+            </div>
+            <div *ngIf="showFollow && user_id != artist_id" class="col-md-4">
+              <span
+                *ngIf="!follow"
+                class="d-inline text-muted followToggle"
+                (click)="followArtist()"
+                ><i class="fas fa-heart unfollow"></i> Unfollowed</span
+              >
+              <span
+                *ngIf="follow"
+                class="d-inline text-muted followToggle"
+                (click)="unfollowArtist()"
+                ><i class="fas fa-heart follow"></i> Following</span
+              >
+            </div>
+          </div>
+          <div class="pt-4">
+            <p>
+              Category: <span class="genre">{{ category }} | {{ genre }}</span>
+            </p>
+        </div>
+
+        <div class="">
+            <h6>About</h6>
+            <p class="artist-about">{{ description }}</p>
+
+            <!-- <div class="card">
+                <div class="card-body">
+                  <div class="d-flex flex-row">
+                    <div class="badge">
+                       <img oncontextmenu="return false"  src="../../../../assets/images/badge.png" class="img-fluid">
+                    </div>
+                    <div class="decription">
+                      <p>Best voice of the year</p>
+                    </div>
+                  </div>
+                </div>
+              </div> -->
+        </div>
+    </div>
+    </div>
+    <div class="artist_divider" *ngIf="isAddressAvailable"></div>
+    <div class="row artist_award" *ngIf="isAddressAvailable">
+        <div class="col-lg-12">
+            <h6 class="px-3 mb-4 font-weight-bold">Address</h6>
+            <div class="col-lg-4" *ngIf="!toggleData.street1">
+                {{ address.street1 }}
+            </div>
+            <div class="col-lg-4" *ngIf="!toggleData.street2">
+                {{ address.street2 }}
+            </div>
+            <div class="col-lg-4" *ngIf="!toggleData.country">
+                {{ address.country }}
+            </div>
+            <div class="col-lg-4" *ngIf="!toggleData.state">
+                {{ address.state }}
+            </div>
+            <div class="col-lg-4" *ngIf="!toggleData.city">
+                {{ address.city }}
+            </div>
+            <div class="col-lg-4" *ngIf="!toggleData.zipcode">
+                {{ address.zipcode }}
+            </div>
+        </div>
+    </div>
+    <div class="artist_divider" *ngIf="showCarousel && Awards_Acheivements.length > 0"></div>
+    <div class="row artist_award" *ngIf="showCarousel && Awards_Acheivements.length > 0">
+        <div class="col-lg-12">
+            <h6 class="px-3 mb-4 font-weight-bold">Awards and Acheivement</h6>
+        </div>
+        <div class="col-lg-12">
+            <owl-carousel-o [options]="artistAwards">
+                <ng-template carouselSlide *ngFor="let item of Awards_Acheivements">
+                    <div class="col-12">
+                        <div id="artists" class="card d-flex flex-row align-items-center">
+                            <div>
+                                <img oncontextmenu="return false" class="card-img-top p-1" src="../../../../assets/images/badge.png" alt="Card image cap" onerror="this.src='../../../../assets/images/default.png';" />
+                            </div>
+                            <div class="card-body">
+                                <p class="card-text">{{ item }}</p>
+                            </div>
+                        </div>
+                    </div>
+                </ng-template>
+            </owl-carousel-o>
+        </div>
+    </div>
+    <div class="artist_divider"></div>
+    <!-- <iframe width="420" height="315" src="https://www.youtube.com/embed/In0mOb_sJic" frameborder="0"
+        allowfullscreen></iframe> -->
+
+    <div class="row artist_gallery" id="artist_detail_gallery">
+        <div class="col-lg-12">
+            <ngb-tabset type="pills">
+                <ngb-tab>
+                    <ng-template ngbTabTitle>Photo Gallery</ng-template>
+                    <ng-template ngbTabContent>
+                        <div *ngIf="showImage; then list; else message"></div>
+                        <ng-template #message>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <p class="px-3">No Image to Display</p>
+                                </div>
+                            </div>
+                        </ng-template>
+                        <ng-template #list>
+                            <div class="row px-3" *ngIf="!showImageCarousel">
+                                <div class="col-md-3" *ngFor="let item of artistImages; let i = index">
+                                    <img oncontextmenu="return false" src="{{ item.location }}" class="img-fluid" (click)="open(i)" onerror="this.src='../../../../assets/images/default.png';" />
+                                </div>
+                            </div>
+                            <div *ngIf="showImageCarousel">
+                                <owl-carousel-o [options]="artistAwards">
+                                    <ng-template carouselSlide *ngFor="let item of artistImages; let i = index">
+                                        <div class="col-12">
+                                            <img oncontextmenu="return false" src="{{ item.location }}" class="img-fluid" (click)="open(i)" onerror="this.src='../../../../assets/images/default.png';" />
+                                        </div>
+                                    </ng-template>
+                                </owl-carousel-o>
+                            </div>
+                        </ng-template>
+                    </ng-template>
+                </ngb-tab>
+                <ngb-tab>
+                    <ng-template ngbTabTitle>Video Gallery</ng-template>
+                    <ng-template ngbTabContent>
+                        <div *ngIf="showVideo; then listVideo; else messagevideo"></div>
+                        <ng-template #messagevideo>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <p class="px-3">No Video to Display</p>
+                                </div>
+                            </div>
+                        </ng-template>
+                        <ng-template #listVideo>
+                            <div class="row px-3" *ngIf="!showVideoCarousel">
+                                <div class="col-md-3" *ngFor="let item of artistVideo; let i = index">
+                                    <div style="position:relative;" (click)="showArtistVideoView(item)">
+                                        <img src="{{ item.location }}" class="img-fluid" onerror="this.src='../../../../assets/images/default.png';" />
+                                    </div>
+                                </div>
+                            </div>
+                            <div *ngIf="showVideoCarousel">
+                                <owl-carousel-o [options]="artistAwards">
+                                    <ng-template carouselSlide *ngFor="let item of artistVideo; let i = index">
+                                        <div class="col-12">
+                                            <div style="position:relative;" (click)="showArtistVideoView(item)">
+                                                <img src="{{ item.location }}" class="img-fluid" onerror="this.src='../../../../assets/images/default.png';" />
+                                            </div>
+                                        </div>
+                                    </ng-template>
+                                </owl-carousel-o>
+                            </div>
+                        </ng-template>
+
+                        <!-- <owl-carousel-o [options]="artistAwards">
+                  <ng-template carouselSlide *ngFor="let item of artistVideo; let i = index">
+                    <div class="col-12">
+                      <img oncontextmenu="return false"  src="{{item.thumbnail}}" class="img-fluid" click="open(i)"
+                        onerror="this.src='../../../../assets/images/default.png';">
+                    </div>
+                  </ng-template>
+                </owl-carousel-o> -->
+                    </ng-template>
+                </ngb-tab>
+            </ngb-tabset>
+        </div>
+    </div>
+    <div class="row artist_award" *ngIf="showCarousel">
+        <div class="col-lg-12">
+            <h6 class="px-3 mb-4 font-weight-bold">Events</h6>
+        </div>
+        <div class="col-lg-12">
+            <owl-carousel-o [options]="scheduleParticipantList">
+                <ng-template carouselSlide *ngFor="let item of scheduleParticipantList">
+                    <div class="col-12">
+                        <div id="artists" class="card d-flex flex-row align-items-center">
+                            <div>
+                                <img oncontextmenu="return false" class="card-img-top p-1" src="../../../../assets/images/event.png" alt="Card image cap" onerror="this.src='../../../../assets/images/default.png';" />
+                            </div>
+                            <div class="card-body">
+                                <p class="card-text" (click)="routeToEvents(item.eventSchedule.events.id)" style="cursor: pointer;">
+                                    {{ item.eventSchedule.events.name }}
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </ng-template>
+            </owl-carousel-o>
+            <span *ngIf="scheduleParticipantList.length==0">No Events to Display</span>
+        </div>
+    </div>
+    </div>
+    </div>
+</section>
+
+<section *ngIf="showPremium == 'Premium'" id="artist_details_premium">
+    <div class="container">
+        <div class="backbutton">
+            <span class="backButton" routerLink="{{ source }}">
+        <i class="fas fa-chevron-circle-left"></i> back</span
+      >
+    </div>
+    <div class="float-right">
+      <share-buttons
+        [include]="['twitter', 'facebook', 'email', 'whatsapp']"
+        [url]="repoUrl"
+        [title]="mailSubject"
+      ></share-buttons>
+    </div>
+    <div class="artist_box">
+      <div class="row artist_data">
+        <div class="col-lg-4">
+          <img
+            oncontextmenu="return false"
+            class="img-fluid"
+            src="{{ profilePic }}"
+            onerror="this.src='../../../../assets/images/default.png';"
+          />
+        </div>
+        <div class="col-lg-8">
+          <div class="row mt-4">
+            <div class="col-md-8">
+              <h4 class="artist_title">{{ artistName }}</h4>
+            </div>
+            <div *ngIf="!showFollow && user_id != artist_id" class="col-md-4">
+              <span class="d-inline text-muted followToggle" (click)="login()"
+                ><i class="fas fa-heart follow"></i> Follow</span
+              >
+            </div>
+            <div *ngIf="showFollow && user_id != artist_id" class="col-md-4">
+              <span
+                *ngIf="!follow"
+                class="d-inline text-muted followToggle"
+                (click)="followArtist()"
+                ><i class="fas fa-heart unfollow"></i> Follow</span
+              >
+              <span
+                *ngIf="follow"
+                class="d-inline text-muted followToggle"
+                (click)="unfollowArtist()"
+                ><i class="fas fa-heart follow"></i> Following</span
+              >
+            </div>
+          </div>
+          <div class="category pt-4">
+            <p>
+              Category: <span class="genre">{{ category }} | {{ genre }}</span>
+            </p>
+        </div>
+
+        <div class="artist_description">
+            <h6>About</h6>
+            <p class="artist-about">{{ description }}</p>
+
+            <!-- <div class="card">
+                <div class="card-body">
+                  <div class="d-flex flex-row">
+                    <div class="badge">
+                       <img oncontextmenu="return false"  src="../../../../assets/images/badge.png" class="img-fluid">
+                    </div>
+                    <div class="decription">
+                      <p>Best voice of the year</p>
+                    </div>
+                  </div>
+                </div>
+              </div> -->
+        </div>
+    </div>
+    </div>
+    <div class="artist_divider" *ngIf="isAddressAvailable"></div>
+    <div class="row artist_award" *ngIf="isAddressAvailable">
+        <div class="col-lg-12">
+            <h6 class="px-3 mb-4 font-weight-bold">Address</h6>
+            <div class="col-lg-4" *ngIf="!toggleData.street1">
+                {{ address.street1 }}
+            </div>
+            <div class="col-lg-4" *ngIf="!toggleData.street2">
+                {{ address.street2 }}
+            </div>
+            <div class="col-lg-4" *ngIf="!toggleData.country">
+                {{ address.country }}
+            </div>
+            <div class="col-lg-4" *ngIf="!toggleData.state">
+                {{ address.state }}
+            </div>
+            <div class="col-lg-4" *ngIf="!toggleData.city">
+                {{ address.city }}
+            </div>
+            <div class="col-lg-4" *ngIf="!toggleData.zipcode">
+                {{ address.zipcode }}
+            </div>
+        </div>
+    </div>
+    <div class="artist_divider" *ngIf="showCarousel && Awards_Acheivements.length > 0"></div>
+    <div class="row artist_award" *ngIf="showCarousel && Awards_Acheivements.length > 0">
+        <div class="col-lg-12">
+            <h6 class="px-3 mb-4 font-weight-bold">Awards and Acheivement</h6>
+        </div>
+        <div class="col-lg-12">
+            <owl-carousel-o [options]="artistAwards">
+                <ng-template carouselSlide *ngFor="let item of Awards_Acheivements">
+                    <div class="col-12">
+                        <div id="artists" class="card d-flex flex-row align-items-center">
+                            <div>
+                                <img oncontextmenu="return false" class="card-img-top p-1" src="../../../../assets/images/badge.png" alt="Card image cap" onerror="this.src='../../../../assets/images/default.png';" />
+                            </div>
+                            <div class="card-body">
+                                <p class="card-text">{{ item }}</p>
+                            </div>
+                        </div>
+                    </div>
+                </ng-template>
+            </owl-carousel-o>
+        </div>
+    </div>
+    <div class="artist_divider"></div>
+    <!-- <iframe width="420" height="315" src="https://www.youtube.com/embed/In0mOb_sJic" frameborder="0"
+        allowfullscreen></iframe> -->
+
+    <div class="row artist_gallery" id="artist_detail_gallery">
+        <div class="col-lg-12">
+            <ngb-tabset type="pills">
+                <ngb-tab>
+                    <ng-template ngbTabTitle>Photo Gallery</ng-template>
+                    <ng-template ngbTabContent>
+                        <div *ngIf="showImage; then list; else message"></div>
+                        <ng-template #message>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <p class="px-3">No Image to Display</p>
+                                </div>
+                            </div>
+                        </ng-template>
+                        <ng-template #list>
+                            <div class="row px-3" *ngIf="!showImageCarousel">
+                                <div class="col-md-3" *ngFor="let item of artistImages; let i = index">
+                                    <img oncontextmenu="return false" src="{{ item.location }}" class="img-fluid" (click)="open(i)" onerror="this.src='../../../../assets/images/default.png';" />
+                                </div>
+                            </div>
+                            <div *ngIf="showImageCarousel">
+                                <owl-carousel-o [options]="artistAwards">
+                                    <ng-template carouselSlide *ngFor="let item of artistImages; let i = index">
+                                        <div class="col-12">
+                                            <img oncontextmenu="return false" src="{{ item.location }}" class="img-fluid" (click)="open(i)" onerror="this.src='../../../../assets/images/default.png';" />
+                                        </div>
+                                    </ng-template>
+                                </owl-carousel-o>
+                            </div>
+                        </ng-template>
+                    </ng-template>
+                </ngb-tab>
+                <ngb-tab>
+                    <ng-template ngbTabTitle>Video Gallery</ng-template>
+                    <ng-template ngbTabContent>
+                        <div *ngIf="showVideo; then listVideo; else messagevideo"></div>
+                        <ng-template #messagevideo>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <p class="px-3">No Video to Display</p>
+                                </div>
+                            </div>
+                        </ng-template>
+                        <ng-template #listVideo>
+                            <div class="row px-3 video" *ngIf="!showVideoCarousel">
+                                <div class="col-md-3" *ngFor="let item of artistVideo; let i = index">
+                                    <div style="position:relative;" (click)="showArtistVideoView(item)">
+                                        <img src="{{ item.location }}" class="img-fluid" onerror="this.src='../../../../assets/images/default.png';" />
+                                    </div>
+                                </div>
+                            </div>
+                            <div *ngIf="showVideoCarousel">
+                                <owl-carousel-o [options]="artistAwards">
+                                    <ng-template carouselSlide *ngFor="let item of artistVideo; let i = index">
+                                        <div class="col-12">
+                                            <div style="position:relative;" (click)="showArtistVideoView(item)">
+                                                <img src="{{ item.location }}" class="img-fluid" onerror="this.src='../../../../assets/images/default.png';" />
+                                            </div>
+                                        </div>
+                                    </ng-template>
+                                </owl-carousel-o>
+                            </div>
+                        </ng-template>
+
+                        <!-- <owl-carousel-o [options]="artistAwards">
+                  <ng-template carouselSlide *ngFor="let item of artistVideo; let i = index">
+                    <div class="col-12">
+                      <img oncontextmenu="return false"  src="{{item.thumbnail}}" class="img-fluid" click="open(i)"
+                        onerror="this.src='../../../../assets/images/default.png';">
+                    </div>
+                  </ng-template>
+                </owl-carousel-o> -->
+                    </ng-template>
+                </ngb-tab>
+            </ngb-tabset>
+        </div>
+    </div>
+    </div>
+    </div>
+</section>

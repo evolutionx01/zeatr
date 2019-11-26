@@ -1,0 +1,120 @@
+<div class="modal-header">
+    <h4 class="modal-title">Buy Tickets</h4>
+    <button type="button" class="close" aria-label="Close" (click)="activeModal.dismiss('Cross click')">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+<div class="modal-body pb-4">
+    <div class="row divider-buyticket my-4">
+        <div class="col-md-12 text-center">
+            <h4 style="color:coral">{{ ticketsDetails.name }}</h4>
+            <p>
+                <strong>Start Date :</strong> {{ fromDate | date: "dd MMMM y" }} |
+                <strong>End Date :</strong> {{ endDate | date: "dd MMMM y" }}
+            </p>
+            <hr />
+        </div>
+    </div>
+    <div class="row " id="buyTicketDetails">
+        <div class="col-md-12 text-center"></div>
+        <div class="col-md-12 text-center">
+            <div *ngFor="let x of eventTickets; let i = index">
+                <div class="card">
+                    <div class="card-head"></div>
+                    <div class="card-body">
+                        <p *ngIf="x.exceed" style="color:red">
+                            You are exceeded the available tickets count. Please check
+                        </p>
+                        <table class="table">
+                            <tbody>
+                                <tr>
+                                    <td>
+                                        <span class="effect">{{ x.zone }}</span><br />
+                                        <span>Available Tickets :</span>
+                                        <span> {{ x.available }}</span>
+                                    </td>
+                                    <td>
+                                        Adult @MYR {{ x.priceAdult }}<br />
+                                        <ng-number-picker [(value)]="x.adultValue" max="x.maxCount"
+                                            (valueChange)="getValue(x)" size="sm"></ng-number-picker>
+                                        <span *ngIf="x.adultValue">@MYR {{ x.adultValue * x.priceAdult }}</span>
+                                        <span *ngIf="!x.adultValue">@MYR 0.00</span>
+                                    </td>
+                                    <td *ngIf="x.priceChild !== null">
+                                        Child @MYR {{ x.priceChild }}<br />
+                                        <ng-number-picker [(value)]="x.childValue" max="x.maxCount"
+                                            (valueChange)="getValue(x)" size="sm"></ng-number-picker>
+                                        <span *ngIf="x.childValue">@MYR {{ x.childValue * x.priceChild }}</span>
+                                        <span *ngIf="!x.childValue">@MYR 0.00</span>
+                                    </td>
+                                    <td>
+                                        OKU @MYR {{ x.priceOku }}<br />
+                                        <ng-number-picker [(value)]="x.OKUValue" max="x.maxCount"
+                                            (valueChange)="getValue(x)" size="sm"></ng-number-picker>
+                                        <span *ngIf="x.OKUValue">@MYR {{ x.OKUValue * x.priceOku }}</span>
+                                        <span *ngIf="!x.OKUValue">@MYR 0.00</span>
+                                    </td>
+                                    <td>
+                                        Price<br /> @MYR {{ x.totalPrice }}
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <hr />
+            <div class="float-right">
+                <table>
+                    <tr>
+                        <td class="effect">Sub Total </td>
+                        <td>: @MYR {{ sum }}</td>
+                    </tr>
+                    <tr>
+                        <td class="effect">Tax </td>
+                        <td>: 12%</td>
+                    </tr>
+                    <tr>
+                        <td class="effect">Total </td>
+                        <td>: @MYR {{ (12 / 100) * sum + sum }}</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="modal-footer">
+    <form ngNoForm method="post" action="https://demo.mobiversa.com/moApi/" name="frmTransaction" id="frmTransaction">
+        <input type="hidden" name="expectedDate" value="2019-02-09">
+        <input type="hidden" name="orderDesc" value="tours purchase">
+        <input type="hidden" name="reference" value="Mobile Purchase">
+        <input type="hidden" name="orderNo" value="153">
+        <input type="hidden" name="tid" value="55006602">
+        <input type="hidden" name="mid" value="000555500001115">
+        <input type="hidden" name="userName" value="mobi123">
+        <input type="hidden" name="password" value="abc123">
+        <input type="hidden" name="contactName" value="Nafees Test">
+        <input type="hidden" name="city" value="KL">
+        <input type="hidden" name="state" value="Kuala Lumpur">
+        <input type="hidden" name="street" value="Damansara">
+        <input type="hidden" name="countryName" value="Malaysia">
+        <input type="hidden" name="postalCode" value="50740">
+        <input type="hidden" name="email" value="nafees@mobiversa.com">
+        <input type="hidden" name="phoneNo" value="+60123465789">
+        <input type="hidden" name="amount" value="{{ (12 / 100) * sum + sum }}">
+        <input type="hidden" name="responseUrl" value="http://localhost:4200/#/">
+        <input type="submit" [disabled]="isProceed" value="Pay by Mobiversa">
+    </form>
+
+</div>
+
+
+
+<div class="modal-footer pb-4">
+    <button class="btn btn-success" (click)="buyTickets()" [disabled]="isProceed">
+        Proceed
+    </button>
+    <button class="btn btn-default" (click)="actionClicked('no')">Cancel</button>
+</div>

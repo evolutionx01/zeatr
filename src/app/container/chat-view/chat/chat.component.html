@@ -1,0 +1,55 @@
+<div class="modal-header">
+  <h4 class="modal-title">Chat</h4>
+  <button type="button" class="close" aria-label="Close" (click)="activeModal.dismiss('Cross click')">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+<!-- <div class="message sent" *ngIf="chat.type!=='joined' && chat.isMe"> -->
+<div id="chat-box" class="modal-body">
+  <ngb-tabset>
+    <ngb-tab>
+      <ng-template ngbTabTitle>
+        <b>Message</b>
+        <span class="ml-4" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fas fa-user-friends"></i></span>
+        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+            <a *ngFor="let user of chatParticipant; let i = index" class="dropdown-item">{{user.users.firstName}} {{user.users.lastName}}</a>
+            <!-- <a class="dropdown-item">Sushanth</a>
+            <a class="dropdown-item">Reshma</a> -->
+          </div>
+      </ng-template>
+      <ng-template ngbTabContent>
+        <div class="chats">
+          <div #scrollMe class="chatbox">
+            <div *ngFor="let chat of chats">
+
+              <div class="message sent" *ngIf="chat.isMe">
+                {{chat.message}}
+                <span class="metadata">
+                  <span class="time">{{chat.postedOn | date: 'HH:mm aaa'}}</span>
+                </span>
+              </div>
+              <div class="message received" *ngIf="!chat.isMe">
+                <strong>{{chat.postedByName}}</strong> <br>
+                {{chat.message}}
+                <span class="metadata">
+                  <span class="time">{{chat.postedOn | date: 'HH:mm aaa'}}</span>
+                </span>
+              </div>
+              <p align="center" class="joined" *ngIf="chat.type==='joined'">
+                <span class="rounded bg-primary text-white">{{chat.displayName}} Joined</span>
+              </p>
+            </div>
+          </div>
+
+          <div class="d-flex flex-row">
+            <input [(ngModel)]="message" type="text" class="form-control" placeholder="Enter message"
+              style="margin-right: 10px" (keyup.enter)="sendMessage(message)">
+            <button [disabled]="!message || sending" (click)="sendMessage(message)" class="btn btn-primary">
+              {{sending ? 'Sending' : 'Send'}}</button>
+          </div>
+        </div>
+      </ng-template>
+    </ngb-tab>
+  </ngb-tabset>
+
+</div>

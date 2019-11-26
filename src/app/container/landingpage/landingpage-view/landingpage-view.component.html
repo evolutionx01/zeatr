@@ -1,0 +1,201 @@
+<section id="landing">
+  <img oncontextmenu="return false" src="../../../../assets/images/zeatr-banner.png" class="img-fluid">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-12">
+
+        <div id="home_search" class="form-group">
+          <div class="input-group-custom mb-3 d-flex">
+            <div class="mask_icon">
+              <i class="fas fa-theater-masks"></i>
+            </div>
+            <div>
+              <select class="form-custom" (change)="onTypeChange($event.target.value);">
+                <option *ngFor="let option of searchType" [value]="option.value"
+                  [selected]="option.value == currentSearchType">
+                  {{ option.value }}
+                </option>
+              </select>
+            </div>
+            <div class="ng-autocomplete">
+              <ng-autocomplete [data]="searchdata" [searchKeyword]="keyword"
+                placeHolder="Search for artists, events, activites.." (selected)='selectEvent($event)'
+                (inputChanged)='onChangeSearch($event)' (inputFocused)='onFocused($event)' (inputCleared)='onClear()'
+                [itemTemplate]="itemTemplate" [notFoundTemplate]="notFoundTemplate" (keyup.enter)="searchRedirect()">
+              </ng-autocomplete>
+
+              <ng-template #itemTemplate let-item>
+                <a *ngIf="!showEvent" [innerHTML]="item.firstName"></a>
+                <a *ngIf="showEvent" [innerHTML]="item.name"></a>
+              </ng-template>
+
+              <ng-template #notFoundTemplate let-notFound>
+                <div [innerHTML]="notFound"></div>
+              </ng-template>
+            </div>
+            <div>
+              <button class="btn btn_search" (click)="searchRedirect()">Search</button>
+
+            </div>
+            <!-- <div>
+              <button class="btn btn_location"></button>
+
+            </div> -->
+          </div>
+        </div>
+
+      </div>
+      <div class="col-md-12">
+        <div class="changeState float-right">
+          <p  (click)="change_state()">{{selectedCity}} <i class="fas fa-street-view d-inline icon_color"></i></p>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-3">
+        <div class="d-flex">
+          <div class="quickSearch">Quick Search</div>
+          <div class="right-arrow"></div>
+        </div>
+      </div>
+      <div class="col-md-3">
+        <div class="quick_title text-center">
+          <h6>This Week</h6>
+          <p (click)="quickSearch(firstDayOfTheWeek, lastDayOfTheWeek)">{{firstDayOfTheWeek}} - {{lastDayOfTheWeek}}</p>
+        </div>
+
+      </div>
+      <div class="col-md-3">
+        <div class="quick_title text-center">
+          <h6>Next Week</h6>
+          <p (click)="quickSearch(firstDayOfNextTheWeek,lastDayOfNextTheWeek)">{{firstDayOfNextTheWeek}} -
+            {{lastDayOfNextTheWeek}}</p>
+        </div>
+
+      </div>
+      <div class="col-md-3">
+        <div class="quick_title text-center">
+          <h6>This Month</h6>
+          <p (click)="quickSearch(monthStart, monthEnd )">{{monthStart}} - {{monthEnd}}</p>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+</section>
+
+<section id="adverts">
+  <div class="container">
+    <div class="wp-box">
+      <div class="inner">
+        Advertise Here
+      </div>
+    </div>
+  </div>
+</section>
+<div class="divider"></div>
+
+<app-upcoming-events></app-upcoming-events>
+
+<div class="divider"></div>
+
+<app-featured-artist></app-featured-artist>
+
+<div class="divider"></div>
+
+<section id="benifits">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-12">
+        <h5>BENEFITS</h5>
+      </div>
+    </div>
+    <div class="row pt-4">
+      <div class="col-lg-4 col-md-6 col-xs-6 col-12">
+        <div id="listOfBenifit" class="card d-flex flex-row align-items-center" (click)="benifits(1)">
+          <div class="card-icon">
+            <i class="fas fa-theater-masks"></i>
+          </div>
+          <div class="card-body">
+            <p class="card-title mb-0">Artists/Performance</p>
+          </div>
+          <div class="card-arrow">
+            <i class="fas fa-chevron-right"></i>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-lg-4 col-md-6 col-xs-6 col-12">
+        <div id="listOfBenifit" class="card d-flex flex-row align-items-center" (click)="benifits(2)">
+          <div class="card-icon">
+            <i class="fas fa-calendar-week"></i>
+          </div>
+          <div class="card-body">
+            <p class="card-title mb-0">Organizer</p>
+          </div>
+          <div class="card-arrow">
+            <i class="fas fa-chevron-right"></i>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-lg-4 col-md-6 col-xs-6 col-12">
+        <div id="listOfBenifit" class="card d-flex flex-row align-items-center" (click)="benifits(3)">
+          <div class="card-icon">
+            <i class="fas fa-users"></i>
+          </div>
+          <div class="card-body">
+            <p class="card-title mb-0">Audience</p>
+          </div>
+          <div class="card-arrow">
+            <i class="fas fa-chevron-right"></i>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row pt-4">
+      <div class="col-lg-4 col-md-6 col-xs-6 col-12">
+        <div id="listOfBenifit" class="card d-flex flex-row align-items-center" (click)="benifits(4)">
+          <div class="card-icon">
+            <i class="fas fa-compass"></i>
+          </div>
+          <div class="card-body">
+            <p class="card-title mb-0">Venue</p>
+          </div>
+          <div class="card-arrow">
+            <i class="fas fa-chevron-right"></i>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-lg-4 col-md-6 col-xs-6 col-12">
+        <div id="listOfBenifit" class="card d-flex flex-row align-items-center" (click)="benifits(5)">
+          <div class="card-icon">
+            <i class="fas fa-building"></i>
+          </div>
+          <div class="card-body">
+            <p class="card-title mb-0">Production House/ Media</p>
+          </div>
+          <div class="card-arrow">
+            <i class="fas fa-chevron-right"></i>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-lg-4 col-md-6 col-xs-6 col-12">
+        <div id="listOfBenifit" class="card d-flex flex-row align-items-center" (click)="benifits(6)">
+          <div class="card-icon">
+            <i class="fas fa-headset"></i>
+          </div>
+          <div class="card-body">
+            <p class="card-title mb-0">Supporting Function</p>
+          </div>
+          <div class="card-arrow">
+            <i class="fas fa-chevron-right"></i>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

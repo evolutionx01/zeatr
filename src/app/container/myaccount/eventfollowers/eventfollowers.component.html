@@ -1,0 +1,26 @@
+<section id="follower">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-12">
+        <h4 class="mb-4">FOLLOWERS</h4>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-8">
+        <div id="artists" class="card d-flex flex-row mb-4" *ngFor="let item of followerList; let i = index">
+          <div>
+            <img oncontextmenu="return false" class="card-img-top p-1" src="{{item.userId.profilePic}}" alt="Card image cap"
+              onerror="this.src='../../../../assets/images/default.png';">
+          </div>
+          <div class="card-body">
+            <p class="card-title mb-0">{{item.userId.firstName}} {{item.userId.lastName}}</p>
+            <p class="card-text">{{item.userId.email}}</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <p class="subtitle">Broad cast your message</p>
+      </div>
+    </div>
+  </div>
+</section>

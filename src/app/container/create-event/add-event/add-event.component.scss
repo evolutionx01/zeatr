@@ -1,0 +1,79 @@
+@import '~src/assets/sass/variables';
+@import '~src/assets/sass/mixins';
+
+section{
+    background: #f6f6f6;
+}
+
+#createEvent{
+    padding: 2.5rem 1rem; 
+  
+
+}
+
+#createTickets{
+    padding: 2.5rem 1rem; 
+    background: #e2e2e2;
+    
+   .float-right{
+       cursor: pointer;
+   }
+}
+
+#createProgram{
+    padding: 2.5rem 1rem; 
+    background: #fff;
+
+    .addProgram{
+        position: relative;
+        border: 1px solid #e2e2e2;
+        background: #e2e2e2;
+        padding: 2rem;
+        box-shadow: 0 5px 5px -3px rgba(0, 0, 0, 0.2), 0 8px 10px 1px rgba(0, 0, 0, 0.14), 0 3px 14px 2px rgba(0, 0, 0, 0.12);
+        .btn-absolute{
+            position: absolute;
+            right: 0;
+            top: 0;
+            padding: .25rem 1.5rem;
+            border-radius: 20px;
+            vertical-align: middle;
+            @include btn_header(#f26633, #e2e2e2);
+        }
+    }
+
+    
+}
+
+#update{
+    padding: 2.5rem 1rem; 
+
+}
+.btn-add{
+    padding: .25rem 1.5rem;
+    border-radius: 20px;
+    vertical-align: middle;
+    @include btn_header(#f26633, #fff);
+}
+
+.btn-file{
+    padding: 0.325rem 1.5rem;
+    border-radius: 20px;
+        @include input_file()
+   }
+
+.header{
+    font-size: 12px;
+    margin-bottom: 0px;
+}
+
+.col{
+    width: 7%;
+}
+
+.btn-sm{
+    width: 100px;
+    height: 25px;
+    font-size: 10px;
+    margin-bottom: 5px;
+    margin-left: 5px;
+}

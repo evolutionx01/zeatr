@@ -1,0 +1,388 @@
+@import '~src/assets/sass/variables';
+@import '~src/assets/sass/mixins';
+
+#account{
+    padding: 2.5rem 0; 
+    background: #f6f6f6;
+   .img-custom{
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    object-fit: cover;
+   }
+   .btn-account{
+    padding: 0.25rem .75rem;
+    font-size: 0.75rem;
+    border-radius: 20px;
+    vertical-align: middle;
+    @include btn_header(#f26633, #fff);
+   }
+   .btn-confirm{
+    padding: 0.25rem .75rem;
+    font-size: 0.75rem;
+    border-radius: 20px;
+    vertical-align: middle;
+    @include btn_header( rgba(0, 0, 243, 0.603), #fff);
+   }
+   .btn-file{
+    padding: 0.325rem 1.5rem;
+    border-radius: 20px;
+        @include input_file()
+   }
+   #imageVideoView{
+       background: #e6e6e6;
+   }
+   #artistEvent{
+       .card{
+        background: transparent;
+        border: none;
+        .img-event{
+            img{
+                width: 400px;
+                height: 135px;
+                object-fit: cover;
+            }
+        }
+        .card-body{
+            padding: .5rem 1rem;
+            .btn-event-action{
+                font-size: 12px;
+                border-radius: 25px;
+                padding: 0.2rem 1rem;
+                @include btn_header(#f26633, #fff);
+            }
+            .card-date{
+                font-size: 0.8125rem;
+                padding: .5rem 0;
+            }
+        }
+
+       }
+   
+   }
+   #accountImage{
+       margin-bottom: 1rem;
+       background: transparent;
+        border: none;
+
+        img{
+            height: 110px;
+            object-fit: cover;
+        }
+        .card-title{
+            font-weight: bold;
+            font-size: 12px;
+            padding: .25rem 0;
+            display: inline-block;
+            width: 100%;
+            white-space: nowrap;
+            overflow: hidden !important;
+            text-overflow: ellipsis;
+        }
+
+   }
+
+   #accountVideo{
+    margin-bottom: 1rem;
+    background: transparent;
+     border: none;
+     .card-title{
+         font-weight: bold;
+         font-size: 12px;
+         padding: .25rem 0;
+         display: inline-block;
+         width: 100%;
+         white-space: nowrap;
+         overflow: hidden !important;
+         text-overflow: ellipsis;
+     }
+
+}
+   .btn-youtube{
+       padding: 0.25rem 1.5rem;
+       border-radius: 20px;
+        @include btn_header(#f26633, #fff);
+   }
+
+   .btn-upload{
+    padding: 0.25rem 1.5rem;
+    border-radius: 20px;
+     @include btn_header(#6c757d, #fff);
+   }
+
+   .btn-edit{
+    // @include btn_header(#f26633, #fff);
+    padding: 0;
+    color: #f26633;
+    &:hover{
+         color: #6c757d;
+    }
+   }
+
+   .btn-info{
+    // @include btn_header(#f26633, #fff);
+    padding: 0;
+    color: rgb(29, 161, 242);
+    background-color: transparent;
+    border: none;
+    &:hover{
+         color: #6c757d;
+    }
+   }
+   .btn-primary{
+    // @include btn_header(#f26633, #fff);
+    padding: 0;
+    color: #3b5998;
+    background-color: transparent;
+    border: none;
+    &:hover{
+         color: #6c757d;
+    }
+   }
+   #products{
+       .card{
+           .card-body{
+               padding: 1rem .5rem;
+           }
+       }
+   }
+   #basic_details{
+       .profileName{
+            font-weight: bold;
+            color: $black;
+       }
+       .profileEmail{
+        font-size: 0.75rem;
+
+       }
+    }
+   .borderBottom{
+        border-bottom: 1px solid white;
+    }
+
+   #artistDetails{
+    background: #e6e6e6;
+
+    
+    .btn-update{
+        border-radius: 20px;
+        padding: 0.25rem 2.5rem;
+        @include btn_header(#f26633, #fff);
+    }
+   }
+
+   .follow{
+       padding: 0 1rem;
+       .count{
+       font-weight: bold;
+       color:$primary;
+       padding-right: 0.5rem;
+      
+       }
+       .countlabel{
+        font-size: .8125rem;
+        cursor: pointer;
+       }
+   }
+
+   #calender{
+    #event_list{
+        .card{
+            padding: .25rem;
+            .card-body{
+                padding: 0rem .75rem;
+                .card-title{
+                    margin-bottom: 0.4rem;
+                    font-size: 0.8125rem;
+                }
+                .card-date{
+                    font-size: .75rem;
+                }
+            }
+        }
+       
+    }
+}
+
+.head{
+    font-weight: 100;
+}
+
+.blockquote{
+    text-align: justify;
+    font-size: 14px;
+}
+
+.card-venue{
+    background-color: rgba(255, 0, 0, 0.03);
+    padding: 15px 15px 15px 15px
+}
+  
+
+
+   
+}
+
+
+
+.item.list-group-item
+{
+    float: none;
+    width: 100%;
+    background: transparent;
+    margin-bottom: 30px;
+    -ms-flex: 0 0 100%;
+    flex: 0 0 100%;
+    max-width: 100%;
+    padding: 0 1rem;
+    border: 0;
+}
+.item.list-group-item .img-event {
+    float: left;
+    width: 30%;
+}
+
+.item.list-group-item .list-group-image
+{
+    margin-right: 10px;
+}
+.item.list-group-item .thumbnail
+{
+    margin-bottom: 0px;
+    display: inline-block;
+}
+.item.list-group-item .caption
+{
+    float: left;
+    width: 70%;
+    margin: 0;
+}
+
+// .item.list-group-item:before, .item.list-group-item:after
+// {
+//     display: table;
+//     content: " ";
+// }
+
+.btn-event-action{
+    border-radius: 25px;
+    padding: 0.2rem 1rem;
+    @include btn_header(#f26633, #fff);
+}
+
+#account{
+.form-group.col-md-1{
+   top:24px;
+ }
+}
+
+
+.has-task{
+    background-color: #00b6dd;
+    color: white;
+    padding: 0 5px;
+    display: block;
+    border-radius: 10px;
+}
+ .dot-public{
+     color: green;
+     font-size: 5px;
+ }
+
+ .dot-private{
+    color: orange;
+    font-size: 5px;
+}
+
+.text-muted{
+    font-size: 12px;
+}
+
+.cat{
+    margin-bottom: 5px;
+    cursor: pointer;
+    min-width: 150px;
+}
+
+.dot-span{
+    position: relative;
+    top: -10px;
+    }
+
+.check{
+    font-size: 10px;
+    margin-bottom: 0;
+    cursor: pointer;
+}
+
+.date{
+    font-size: 12px;
+    color: #f26633;
+}
+
+.bg-light{
+    margin-bottom: 40px !important;
+}
+
+.img-look{
+    width: 100px;
+    height: 100px;
+}
+
+.invoice-title h2, .invoice-title h3 {
+    display: inline-block;
+}
+
+.table > tbody > tr > .no-line {
+    font-size: 12px;
+    border-top: none;
+}
+
+.table > thead > tr > .no-line {
+    font-size: 12px;
+    border-bottom: none;
+}
+
+.table > tbody > tr > .thick-line {
+    font-size: 12px;
+    border-top: 2px solid;
+}
+
+.invoice-title h5{
+    margin-top: 10px;
+}
+
+address{
+    font-size: 12px;
+}
+
+.table{
+    font-size: 12px;
+}
+
+.text-center{
+    font-size: 12px;
+}
+
+.text-right{
+    font-size: 12px;
+}
+
+.cancel{
+    font-size:10px;
+    color: blue !important;
+    cursor: pointer;
+}
+
+.cancelled{
+    color: red !important
+}
+
+.dot-booking{
+    color: blueviolet;
+    font-size: 5px;
+}
+
+.btn:disabled{
+    cursor: default !important;
+}

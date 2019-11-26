@@ -1,0 +1,44 @@
+<section id="featured_artists">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-9">
+                <h5>FEATURED ARTISTS</h5>
+            </div>
+            <div class="col-md-3">
+                <ng-select [items]="category" bindLabel="category" bindValue="code" placeholder="Pick A Category">
+                </ng-select>
+            </div>
+        </div>
+        <div class="row pt-4">
+            <div *ngFor="let item of featuredArtistsData; let i = index" class="col-12 col-sm-6 col-md-4 col-lg-3">
+                <div id="artists" class="card d-flex flex-row align-items-center">
+                    <div (click)="artistDetailPage(item.user.id)">
+                        <img oncontextmenu="return false" class="card-img-top p-1" src="{{ item.user.profilePic }}" alt="Card image cap" onerror="this.src='../../../../assets/images/default.png';" />
+                    </div>
+                    <div class="card-body" (click)="artistDetailPage(item.user.id)">
+                        <p class="card-title mb-0">{{ item.user.firstName }}</p>
+                        <p class="card-text">{{ item.category }} | {{item.subCategory}}</p>
+                    </div>
+                    <!-- <div *ngIf="!showFollow && user_id != item.id" class="col-md-4"> -->
+                    <span *ngIf="!showFollow && user_id != item.user.id" class="d-inline text-muted followToggle" (click)="login()"><i class="fas fa-heart unfollow"></i
+            ></span>
+                    <!-- </div> -->
+                    <!-- <div *ngIf="showFollow && user_id != item.id" class="col-md-4"> -->
+                    <span *ngIf="showFollow && user_id != item.user.id && !item.follow" class="d-inline text-muted followToggle" (click)="followArtist(item.user.id)"><i class="fas fa-heart unfollow"></i
+            ></span>
+                    <span *ngIf="showFollow && user_id != item.user.id && item.follow" class="d-inline text-muted followToggle" (click)="unfollowArtist(item.user.id)"><i class="fas fa-heart follow"></i
+            ></span>
+                    <!-- </div> -->
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-lg-12 text-center mt-4">
+                <button class="btn btn-load" (click)="artistListingPage()">
+          LOAD MORE
+        </button>
+            </div>
+        </div>
+    </div>
+</section>
